@@ -5,14 +5,28 @@ from util import number_to_char
 
 class Integer:
     """
-    Class used to store massive integers. This gets passed to arithmetic
-    algorithms.
+    Class used to store large integers. Detailed documentation is given below,
+    so here are some common use cases:
 
-    Example:
         i = Integer('6A', 16, False)
         i.digits   -> [6, 10]
         i.base     -> 16
         i.positive -> False
+
+        i.digits[0] = 1
+        print(i) -> '-1A'
+        repr(i)  -> '-[1, 10] (base 16)'
+
+        i = -i
+        print(i) -> '1A'
+
+        len(i) -> 2
+        i = i.pad(6)
+        repr(i) -> +[0, 0, 0, 0, 1, 10] (base 16)
+        len(i) -> 6
+
+        j = Integer([1, 10, 2, 13], 16)
+        print(j) -> '1A2D'
     """
     def __init__(self, digits, base = 10, positive = True):
         """
@@ -20,7 +34,7 @@ class Integer:
             digits:
                 A list of numbers - they should all be lower than the base.
                 The most significant numbers are at the beginning of this list.
-                A string can be used as well, e.g. "13AF".
+                A string can be used as well, e.g. '13AF'.
             base:
                 Base of the number. Decimal by default.
             positive:
@@ -70,6 +84,28 @@ class Integer:
 
         # We could remove leading zeroes here using self.strip(), but for
         # assignment 1 that shouldn't be neccesary.
+
+    def __len__(self):
+        """
+        Useful shortcut. Example:
+
+            i = new Integer([1, 2, 3], 8)
+            len(i) -> 3
+            len(i) == len(i.digits) -> True
+        """
+        return len(self.digits)
+
+    def __neg__(self):
+        """
+        Negation operator. Example:
+
+            i = new Integer('ABC', 16)
+            i -> +[10, 11, 12] (base 16)
+            -i -> -[10, 11, 12] (base 16)
+        """
+        new_int = self.copy()
+        new_int.positive = !new_int.positive
+        return new_int
 
     def __str__(self):
         """
@@ -122,8 +158,11 @@ class Integer:
 
     def get_digit_string(self):
         """
-        Returns this integers digits as a string, not a list. It converts digits
+        Returns the integer's digits as a string, not a list. It converts digits
         above 9 to the hexadecimal counterparts.
+
+        Used by the class internally. Don't call it directly, but use print(i)
+        instead.
         """
         s = ''
         for digit in self.digits:
@@ -132,7 +171,7 @@ class Integer:
 
     def copy(self):
         """
-        Returns a distinct copy of itself. Used in Integer.pad().
+        Returns a distinct copy of itself.
         """
         digits_copy = self.digits.copy()
         return Integer(digits_copy, self.base, self.positive)

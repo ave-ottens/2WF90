@@ -1,57 +1,56 @@
 # Necessary classes. Use like this: "from classes import Integer".
 
-from util import char_to_number
-from util import number_to_char
-
 class Integer:
     """
     Class used to store large integers. Detailed documentation is given below,
     so here are some common use cases:
 
+        from Integer import *
+
         i = Integer('6A', 16, False)
         i.digits   -> [6, 10]
-        i.base     -> 16
+        i.radix     -> 16
         i.positive -> False
 
         i.digits[0] = 1
         print(i) -> '-1A'
-        repr(i)  -> '-[1, 10] (base 16)'
+        repr(i)  -> '-[1, 10] (radix 16)'
 
         i = -i
         print(i) -> '1A'
 
         len(i) -> 2
         i = i.pad(6)
-        repr(i) -> +[0, 0, 0, 0, 1, 10] (base 16)
+        repr(i) -> +[0, 0, 0, 0, 1, 10] (radix 16)
         len(i) -> 6
 
         j = Integer([1, 10, 2, 13], 16)
         print(j) -> '1A2D'
     """
-    def __init__(self, digits, base = 10, positive = True):
+    def __init__(self, digits, radix = 10, positive = True):
         """
         Arguments:
             digits:
-                A list of numbers - they should all be lower than the base.
+                A list of numbers - they should all be lower than the radix.
                 The most significant numbers are at the beginning of this list.
                 A string can be used as well, e.g. '13AF'.
-            base:
-                Base of the number. Decimal by default.
+            radix:
+                radix of the number. Decimal by default.
             positive:
                 True if the number has a positive sign, False if negative.
                 Positive by default.
 
         Examples:
-            Integer([1, 0, 14, 2], 16)  -> +10E2   (base 16)
-            Integer('100101', 2, False) -> -100101 (base 2)
-            Integer([1, 2, 3])          -> +123    (base 10)
+            Integer([1, 0, 14, 2], 16, False)  -> -10E2   (radix 16)
+            Integer('-100101', 2)              -> -100101 (radix 2)
+            Integer([1, 2, 3])                 -> +123    (radix 10)
         """
 
-        if base > 16:
-            raise ValueError(f'Base is {base}. Bases beyond 16 are not supported.')
+        if radix > 16:
+            raise ValueError(f'radix is {radix}. radixs beyond 16 are not supported.')
 
-        if base < 1:
-            raise ValueError(f'Base is {base}. Base must be positive.')
+        if radix < 1:
+            raise ValueError(f'radix is {radix}. radix must be positive.')
 
         if len(digits) == 0:
             raise ValueError('Digit list cannot be empty.')
@@ -59,8 +58,8 @@ class Integer:
         # Sanity checks when digits are given as a list.
         if type(digits) is list:
             for digit in digits:
-                if digit >= base:
-                    raise ValueError(f'Digit {digit} is not allowed in base {base}.')
+                if digit >= radix:
+                    raise ValueError(f'Digit {digit} is not allowed in radix {radix}.')
 
                 if (digit < 0):
                     raise ValueError(f'Digit {digit} may not be negative.')
@@ -68,18 +67,22 @@ class Integer:
         # Sanity checks when digits are given as a string.
         # Also transforms string into its list representation.
         if type(digits) is str:
+            if digits[0] == '-':
+                positive = False
+                digits = digits[1:]
+
             new_digits = []
 
             for digit in digits:
                 num = char_to_number(digit)
-                if num >= base:
-                    raise ValueError(f'Digit {digit} is not allowed in base {base}.')
+                if num >= radix:
+                    raise ValueError(f'Digit {digit} is not allowed in radix {radix}.')
                 new_digits.append(num)
 
             digits = new_digits
 
         self.digits = digits
-        self.base = base
+        self.radix = radix
         self.positive = positive
 
         # We could remove leading zeroes here using self.strip(), but for
@@ -100,16 +103,16 @@ class Integer:
         Negation operator. Example:
 
             i = new Integer('ABC', 16)
-            i -> +[10, 11, 12] (base 16)
-            -i -> -[10, 11, 12] (base 16)
+            i -> +[10, 11, 12] (radix 16)
+            -i -> -[10, 11, 12] (radix 16)
         """
         new_int = self.copy()
-        new_int.positive = !new_int.positive
+        new_int.positive = not new_int.positive
         return new_int
 
     def __str__(self):
         """
-        Represent integer as a string. The base is not given, and a minus sign
+        Represent integer as a string. The radix is not given, and a minus sign
         is added if negative. This is the same as notation found in input.
 
         Examples:
@@ -120,12 +123,12 @@ class Integer:
     def __repr__(self):
         """
         Represent as string, but with more information. Useful for debugging.
-        The digit list is always printed, along with the sign and base.
+        The digit list is always printed, along with the sign and radix.
 
         Examples:
-            repr(Integer('6A', 16, False)) -> -[6, 10] (base 16)
+            repr(Integer('6A', 16, False)) -> -[6, 10] (radix 16)
         """
-        return ('+' if self.positive else '-') + f'{self.digits} (base {self.base})'
+        return ('+' if self.positive else '-') + f'{self.digits} (radix {self.radix})'
 
     def pad(self, size):
         """
@@ -174,4 +177,16 @@ class Integer:
         Returns a distinct copy of itself.
         """
         digits_copy = self.digits.copy()
-        return Integer(digits_copy, self.base, self.positive)
+        return Integer(digits_copy, self.radix, self.positive)
+
+def char_to_number(character):
+    character = character.upper()
+    index = '0123456789ABCDEF'.find(character)
+
+    if index == -1:
+        raise ValueError('Character must be hexadecimal notation.')
+
+    return index
+
+def number_to_char(number):
+    return '0123456789ABCDEF'[number] # ;)

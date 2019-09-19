@@ -1,5 +1,5 @@
 # All algorithms combined
-def addition(inputX, positiveX, inputY, positiveY, b):
+def addition(inputX, positiveX, inputY, positiveY, b, countAdd = 0, countMult = 0):
     lenX = len(inputX)
     lenY = len(inputY)
     inputXY = inputX, inputY
@@ -14,15 +14,15 @@ def addition(inputX, positiveX, inputY, positiveY, b):
         # set positive indicator
         positiveOutput = False
         # run addition
-        output = addition(inputX, True, inputY, True, b)[1]
+        [output, countAdd, countMult] = addition(inputX, True, inputY, True, b, countAdd, countMult)[1:4]
 
     elif (positiveX == True) and (positiveY == False):
         # run subtraction
-        [positiveOutput, output] = subtraction(inputX, True, inputY, True, b)
+        [positiveOutput, output, countAdd, countMult] = subtraction(inputX, True, inputY, True, b, countAdd, countMult)
 
     elif (positiveX == False) and (positiveY == True):
         # run subtraction
-        [positiveOutput, output] = subtraction(inputY, True, inputX, True, b)
+        [positiveOutput, output, countAdd, countMult] = subtraction(inputY, True, inputX, True, b, countAdd, countMult)
 
     elif (positiveX == True) and (positiveY == True):
         # set positive indicator
@@ -37,6 +37,7 @@ def addition(inputX, positiveX, inputY, positiveY, b):
                 carry = output[-i] // b
                 output[-i] = output[-i] % b
                 output[-(i+1)] += carry
+                countAdd += 1
 
     i = 0
     while i < (len(output) - 1):
@@ -45,10 +46,10 @@ def addition(inputX, positiveX, inputY, positiveY, b):
             continue
         break
 
-    return [positiveOutput, output]
+    return [positiveOutput, output, countAdd, countMult]
 
 
-def subtraction(inputX, positiveX, inputY, positiveY, b):
+def subtraction(inputX, positiveX, inputY, positiveY, b, countAdd = 0, countMult = 0):
     lenX = len(inputX)
     lenY = len(inputY)
     inputXY = inputX, inputY
@@ -61,15 +62,15 @@ def subtraction(inputX, positiveX, inputY, positiveY, b):
 
     if (positiveX == False) and (positiveY == False):
         # run addition
-        [positiveOutput, output] = subtraction(inputY, True, inputX, True, b)
+        [positiveOutput, output, countAdd, countMult] = subtraction(inputY, True, inputX, True, b, countAdd, countMult)
 
     elif (positiveX == True) and (positiveY == False):
         # run subtraction
-        [positiveOutput, output] = addition(inputX, True, inputY, True, b)
+        [positiveOutput, output, countAdd, countMult] = addition(inputX, True, inputY, True, b, countAdd, countMult)
 
     elif (positiveX == False) and (positiveY == True):
         # run subtraction
-        [positiveOutput, output] = addition(inputX, False, inputY, False, b)
+        [positiveOutput, output, countAdd, countMult] = addition(inputX, False, inputY, False, b, countAdd, countMult)
 
     elif (positiveX == True) and (positiveY == True):
         # check which number is bigger
@@ -84,7 +85,7 @@ def subtraction(inputX, positiveX, inputY, positiveY, b):
                 positiveOutput = False
             elif (inputX[i] == inputY[i]):
                 if (i == maxLen - 1):
-                    return [True, [0]]
+                    return [True, [0], countAdd, countMult]
                 continue
             break
         
@@ -92,6 +93,7 @@ def subtraction(inputX, positiveX, inputY, positiveY, b):
         diffXY = [0] * maxLen
         for i in range(maxLen):
             diffXY[i] = inputX[i] - inputY[i]
+            countAdd += 1
         output = diffXY.copy()
 
         for i in range(1, len(output)):
@@ -100,7 +102,8 @@ def subtraction(inputX, positiveX, inputY, positiveY, b):
                 output[-(i+1)] -= 1
                 rem = output[-i] + b
                 output[-i] = rem
-
+                countAdd += 2
+        
     i = 0
     while i < (len(output) - 1):
         if (output[i] == 0):
@@ -108,10 +111,10 @@ def subtraction(inputX, positiveX, inputY, positiveY, b):
             continue
         break
 
-    return [positiveOutput, output]
+    return [positiveOutput, output, countAdd, countMult]
 
 
-def multiplication(inputX, positiveX, inputY, positiveY, b):
+def multiplication(inputX, positiveX, inputY, positiveY, b, countAdd = 0, countMult = 0):
     inputXY = inputX, inputY
     maxLen = max(map(len, inputXY))
     minLen = min(map(len, inputXY))
@@ -130,13 +133,16 @@ def multiplication(inputX, positiveX, inputY, positiveY, b):
             digit1 = inputX[-(j+1)]
             outputNumber = digit1 * digit2
             output[-(1+i+j)] += outputNumber
+            countAdd += 1
+            countMult += 1
 
     for i in range(1, len(output)+1):
         if output[-i] >= b:
             carry = output[-i] // b
             output[-i] = output[-i] % b
             output[-(i+1)] += carry
-    
+            countAdd += 1
+
     i = 0
     while i < (len(output) - 1):
         if (output[i] == 0):
@@ -144,10 +150,10 @@ def multiplication(inputX, positiveX, inputY, positiveY, b):
             continue
         break
 
-    return [positiveOutput, output]
+    return [positiveOutput, output, countAdd, countMult]
 
 
-def karatsuba(inputX, positiveX, inputY, positiveY, b):
+def karatsuba(inputX, positiveX, inputY, positiveY, b, countAdd = 0, countMult = 0):
     positiveOutput = not (positiveX ^ positiveY)
 
     i = 0;
@@ -165,8 +171,8 @@ def karatsuba(inputX, positiveX, inputY, positiveY, b):
         break
 
     if (len(inputX) <= 1 or len(inputY) <= 1):
-        [positive, output] = multiplication(inputX, positiveX, inputY, positiveY, b)
-        return [positive, output]
+        [positive, output, countAdd, countMult] = multiplication(inputX, positiveX, inputY, positiveY, b, countAdd, countMult)
+        return [positive, output, countAdd, countMult]
     
     inputXY = inputX, inputY
     maxLen = max(len(inputX), len(inputY))
@@ -190,26 +196,29 @@ def karatsuba(inputX, positiveX, inputY, positiveY, b):
     y_lo = inputY[n:]
 
     # calculate all multiplications with recursion
-    xy_hi = karatsuba(x_hi, True, y_hi, True, b)[1]
-    xy_lo = karatsuba(x_lo, True, y_lo, True, b)[1]
-    sumX = addition(x_hi, True, x_lo, True, b)[1]
-    sumY = addition(y_hi, True, y_lo, True, b)[1]
-    sumXY = karatsuba(sumX, True, sumY, True, b)[1]
-    [xy_positive, xy_temp] = subtraction(sumXY, True, xy_hi, True, b)
-    [positiveMix, xy_mix] = subtraction(xy_temp, xy_positive, xy_lo, True, b)
+    [xy_hi, countAdd, countMult] = karatsuba(x_hi, True, y_hi, True, b, countAdd, countMult)[1:4]
+    [xy_lo, countAdd, countMult] = karatsuba(x_lo, True, y_lo, True, b, countAdd, countMult)[1:4]
+    [sumX, countAdd, countMult] = addition(x_hi, True, x_lo, True, b, countAdd, countMult)[1:4]
+    [sumY, countAdd, countMult] = addition(y_hi, True, y_lo, True, b, countAdd, countMult)[1:4]
+    [sumXY, countAdd, countMult] = karatsuba(sumX, True, sumY, True, b, countAdd, countMult)[1:4]
+    [xy_positive, xy_temp, countAdd, countMult] = subtraction(sumXY, True, xy_hi, True, b, countAdd, countMult)
+    [positiveMix, xy_mix, countAdd, countMult] = subtraction(xy_temp, xy_positive, xy_lo, True, b, countAdd, countMult)
     output = [0] * n * 10
 
     for i in range(1, len(xy_lo) + 1):
         output[-i] += xy_lo[-i]
+        countAdd += 1
     
     for i in range(1, len(xy_mix) + 1):
         if positiveMix:
             output[-(i + n)] += xy_mix[-i]
         else:
             output[-(i + n)] -= xy_mix[-i]
+        countAdd += 1
 
     for i in range(1, len(xy_hi) + 1):
         output[-(i + 2 * n)] += xy_hi[-i]
+        countAdd += 1 
 
     for i in range(1, len(output) + 1):
         rem = 0
@@ -217,10 +226,12 @@ def karatsuba(inputX, positiveX, inputY, positiveY, b):
             carry = output[-i] // b
             output[-i] = output[-i] % b
             output[-(i + 1)] += carry
+            countAdd += 1
         elif (output[-i] < 0):
             output[-(i + 1)] -= 1
             rem = output[-i] + b
             output[-i] = rem
+            countAdd += 2
 
     i = 0
     while i < (len(output) - 1):
@@ -229,8 +240,10 @@ def karatsuba(inputX, positiveX, inputY, positiveY, b):
             continue
         break
 
-    return [positiveOutput, output]
+    return [positiveOutput, output, countAdd, countMult]
 
+print(multiplication([1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9], True, [1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9], True, 10, 0, 0))
+print(karatsuba([1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9], True, [1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9], True, 10, 0, 0))
 
 def euclidean(inputX, positiveX, inputY, positiveY, b):
     x1, x2, y1, y2 = [True, [1]], [True, [0]], [True, [0]], [True, [1]]
@@ -240,10 +253,10 @@ def euclidean(inputX, positiveX, inputY, positiveY, b):
     while not eqZero:
         [r, q] = modular_reduction(numberX, True, numberY, b)[1:3]
         numberX, numberY = numberY, r
-        qx2 = karatsuba(q, True, x2[1], x2[0], b)
-        qy2 = karatsuba(q, True, y2[1], y2[0], b)
-        x3 = subtraction(x1[1], x1[0], qx2[1], qx2[0], b)
-        y3 = subtraction(y1[1], y1[0], qy2[1], qy2[0], b)
+        qx2 = karatsuba(q, True, x2[1], x2[0], b)[0:2]
+        qy2 = karatsuba(q, True, y2[1], y2[0], b)[0:2]
+        x3 = subtraction(x1[1], x1[0], qx2[1], qx2[0], b)[0:2]
+        y3 = subtraction(y1[1], y1[0], qy2[1], qy2[0], b)[0:2]
         x1, y1 = x2, y2
         x2, y2 = x3, y3
 
@@ -294,7 +307,7 @@ def modular_reduction(inputX, positiveX, m, b):
         while positive:
             coeffCounter += 1
             output = tempX.copy()
-            [positive, tempX] = subtraction(output, True, modBase, True, b) #pak de positive output ding
+            [positive, tempX] = subtraction(output, True, modBase, True, b)[0:2] #pak de positive output ding
         coefficient[-(n+1)] = coeffCounter
 
     i = 0;
@@ -314,19 +327,19 @@ def modular_reduction(inputX, positiveX, m, b):
 
 
 def modular_addition(inputX, positiveX, inputY, positiveY, m, b):
-    [positive, sumXY] = addition(inputX, positiveX, inputY, positiveY, b)
+    [positive, sumXY] = addition(inputX, positiveX, inputY, positiveY, b)[0:2]
     output = modular_reduction(sumXY, positive, m, b)[0:2]
     return output
 
 
 def modular_subtraction(inputX, positiveX, inputY, positiveY, m, b):
-    [positive, diffXY] = subtraction(inputX, positiveX, inputY, positiveY, b)
+    [positive, diffXY] = subtraction(inputX, positiveX, inputY, positiveY, b)[0:2]
     output = modular_reduction(diffXY, positive, m, b)[0:2]
     return output
     
 
 def modular_multiplication(inputX, positiveX, inputY, positiveY, m, b):
-    [positive, prodXY] = multiplication(inputX, positiveX, inputY, positiveY, b)
+    [positive, prodXY] = multiplication(inputX, positiveX, inputY, positiveY, b)[0:2]
     output = modular_reduction(prodXY, positive, m, b)[0:2]
     return output
 

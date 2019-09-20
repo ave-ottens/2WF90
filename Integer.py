@@ -1,4 +1,4 @@
-# Necessary classes. Use like this: "from classes import Integer".
+# Use like this: "from classes import Integer".
 
 class Integer:
     """
@@ -130,6 +130,12 @@ class Integer:
         """
         return ('+' if self.positive else '-') + f'{self.digits} (radix {self.radix})'
 
+    def __abs__(self):
+        if self.positive:
+            return self.copy()
+        else:
+            return -self
+
     def pad(self, size):
         """
         Add leading zeroes to the digit list to ensure it becomes a certain size.
@@ -189,4 +195,4 @@ def char_to_number(character):
     return index
 
 def number_to_char(number):
-    return '0123456789ABCDEF'[number] # ;)
+    return '0123456789abcdef'[number] # ;)

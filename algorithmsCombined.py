@@ -5,7 +5,7 @@ def addition(inputX, positiveX, inputY, positiveY, b, countAdd = 0, countMult = 
     inputXY = inputX, inputY
     maxLen = max(map(len, inputXY))
 
-    # add digits 
+    # add digits
     for digits in inputXY:
         while len(digits) <= maxLen:
             digits.insert(0, 0)
@@ -27,7 +27,7 @@ def addition(inputX, positiveX, inputY, positiveY, b, countAdd = 0, countMult = 
     elif (positiveX == True) and (positiveY == True):
         # set positive indicator
         positiveOutput = True
-        
+
         # sum the digits from listX with listY according to index in each list
         sumXY = [sum(x) for x in zip(*inputXY)]
         output = sumXY.copy()
@@ -55,7 +55,7 @@ def subtraction(inputX, positiveX, inputY, positiveY, b, countAdd = 0, countMult
     inputXY = inputX, inputY
     maxLen = max(map(len, inputXY))
 
-    # add digits 
+    # add digits
     for digits in inputXY:
         while len(digits) < maxLen:
             digits.insert(0, 0)
@@ -88,7 +88,7 @@ def subtraction(inputX, positiveX, inputY, positiveY, b, countAdd = 0, countMult
                     return [True, [0], countAdd, countMult]
                 continue
             break
-        
+
         # sum the digits from listX with listY according to index in each list
         diffXY = [0] * maxLen
         for i in range(maxLen):
@@ -103,7 +103,7 @@ def subtraction(inputX, positiveX, inputY, positiveY, b, countAdd = 0, countMult
                 rem = output[-i] + b
                 output[-i] = rem
                 countAdd += 2
-        
+
     i = 0
     while i < (len(output) - 1):
         if (output[i] == 0):
@@ -173,20 +173,20 @@ def karatsuba(inputX, positiveX, inputY, positiveY, b, countAdd = 0, countMult =
     if (len(inputX) <= 1 or len(inputY) <= 1):
         [positive, output, countAdd, countMult] = multiplication(inputX, positiveX, inputY, positiveY, b, countAdd, countMult)
         return [positive, output, countAdd, countMult]
-    
+
     inputXY = inputX, inputY
     maxLen = max(len(inputX), len(inputY))
 
     for digits in inputXY:
         while len(digits) < maxLen:
             digits.insert(0, 0)
-    
+
     if (len(inputX) % 2 == 1):
         inputX.insert(0, 0)
 
     if (len(inputY) % 2 == 1):
         inputY.insert(0, 0)
-    
+
     n = max(len(inputX), len(inputY)) // 2
 
     # define x_hi, x_lo, y_hi and y_lo
@@ -208,7 +208,7 @@ def karatsuba(inputX, positiveX, inputY, positiveY, b, countAdd = 0, countMult =
     for i in range(1, len(xy_lo) + 1):
         output[-i] += xy_lo[-i]
         countAdd += 1
-    
+
     for i in range(1, len(xy_mix) + 1):
         if positiveMix:
             output[-(i + n)] += xy_mix[-i]
@@ -218,7 +218,7 @@ def karatsuba(inputX, positiveX, inputY, positiveY, b, countAdd = 0, countMult =
 
     for i in range(1, len(xy_hi) + 1):
         output[-(i + 2 * n)] += xy_hi[-i]
-        countAdd += 1 
+        countAdd += 1
 
     for i in range(1, len(output) + 1):
         rem = 0
@@ -241,9 +241,6 @@ def karatsuba(inputX, positiveX, inputY, positiveY, b, countAdd = 0, countMult =
         break
 
     return [positiveOutput, output, countAdd, countMult]
-
-print(multiplication([1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9], True, [1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9], True, 10, 0, 0))
-print(karatsuba([1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9], True, [1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9], True, 10, 0, 0))
 
 def euclidean(inputX, positiveX, inputY, positiveY, b):
     x1, x2, y1, y2 = [True, [1]], [True, [0]], [True, [0]], [True, [1]]
@@ -269,7 +266,7 @@ def euclidean(inputX, positiveX, inputY, positiveY, b):
 
         if (numberY[0] == 0):
             eqZero = True
-    
+
     gcd = numberX
 
     if positiveX:
@@ -281,7 +278,7 @@ def euclidean(inputX, positiveX, inputY, positiveY, b):
         y = y1
     else:
         y = [not y1[0], y1[1]]
-    
+
     return [gcd, x, y]
 
 
@@ -289,7 +286,7 @@ def modular_reduction(inputX, positiveX, m, b):
     # len of input X and len of mod
     lenX = len(inputX)
     lenM = len(m)
-    difLen = lenX - lenM 
+    difLen = lenX - lenM
     coefficient = [0]*lenX
     positive = True
     eqZero = False
@@ -322,7 +319,7 @@ def modular_reduction(inputX, positiveX, m, b):
 
     if (positiveX or eqZero):
         return [True, output, coefficient]
-    else: 
+    else:
         return [True, subtraction(m, True, output, True, b)[1], coefficient]
 
 
@@ -336,7 +333,7 @@ def modular_subtraction(inputX, positiveX, inputY, positiveY, m, b):
     [positive, diffXY] = subtraction(inputX, positiveX, inputY, positiveY, b)[0:2]
     output = modular_reduction(diffXY, positive, m, b)[0:2]
     return output
-    
+
 
 def modular_multiplication(inputX, positiveX, inputY, positiveY, m, b):
     [positive, prodXY] = multiplication(inputX, positiveX, inputY, positiveY, b)[0:2]
@@ -344,7 +341,7 @@ def modular_multiplication(inputX, positiveX, inputY, positiveY, m, b):
     return output
 
 
-def modular_inversion(inputX, positiveX, m , b): 
+def modular_inversion(inputX, positiveX, m , b):
     a = modular_reduction(inputX, positiveX, m, b)[1]
     [gcd, x] = euclidean(a, True, m, True, b)[0:2]
 
@@ -352,5 +349,3 @@ def modular_inversion(inputX, positiveX, m , b):
         return modular_reduction(x[1], x[0], m, b)[0:2]
     else:
         return "inverse does not exist"
-
-print(modular_inversion([3],True,[2,7, 1],10))

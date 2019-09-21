@@ -47,7 +47,7 @@ class Integer:
         """
 
         if radix > 16:
-            raise ValueError(f'radix is {radix}. radixs beyond 16 are not supported.')
+            raise ValueError(f'radix is {radix}. radixes beyond 16 are not supported.')
 
         if radix < 1:
             raise ValueError(f'radix is {radix}. radix must be positive.')

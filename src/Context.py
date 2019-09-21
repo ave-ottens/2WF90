@@ -1,7 +1,7 @@
 import re
 
-from Integer import *
-from algorithmsCombined import *
+from src.Integer import Integer
+from src.algorithmsCombined import *
 
 class Context():
     """

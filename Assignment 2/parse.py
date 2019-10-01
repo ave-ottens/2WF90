@@ -2,6 +2,7 @@ import sys # used for input/output
 import re  # used for removing whitespace
 import poly
 import field
+import pdb
 
 # helper method
 def string_to_poly(argument):
@@ -32,7 +33,6 @@ for line in sys.stdin:
         # otherwise, perform the method and write the answers to output
         elif method == 'display-poly':
             answer = poly.display_poly(mod, f)
-            answer = poly.display_poly(mod, answer)
             sys.stdout.write(f'[answer] {answer}\n')
 
         elif method == 'add-poly':
@@ -115,35 +115,45 @@ for line in sys.stdin:
         # reset the method variable when we're done to avoid duplicate answers
         method = None
 
+        # stop processing the line
+        continue
+
     # if the line contains a comment, echo it
     if line[0] == '#':
         sys.stdout.write(line)
 
     # the line must be a command!
     # we can ignore whitespace, so remove it
-    line = re.sub('\s', '', line)
+    stripped = re.sub('\s', '', line)
 
     # find the command name, and argument
-    bracket = line.find(']')
-    command = line[1:bracket]     # line from '[' to ']'
-    argument = line[bracket + 1:] # line after ']'
+    bracket  = stripped.find(']')
+    command  = stripped[1:bracket]     # line from '[' to ']'
+    argument = stripped[bracket + 1:] # line after ']'
 
     # set variables based on the command
     if command == 'mod':
         mod = int(argument)
+        sys.stdout.write(line) # still echo the command for inspection
     elif command == 'f':
         f = string_to_poly(argument)
+        sys.stdout.write(line)
     elif command == 'g':
         g = string_to_poly(argument)
+        sys.stdout.write(line)
     elif command == 'h':
         h = string_to_poly(argument)
+        sys.stdout.write(line)
     elif command == 'deg':
         deg = int(argument)
+        sys.stdout.write(line)
     elif command == 'mod-poly':
         mod_poly = string_to_poly(argument)
+        sys.stdout.write(line)
 
     # no argument is given, so the command tells us what method to execute
     elif argument == '':
         method = command
+        sys.stdout.write(line)
 
     # output commands like [answer] are automatically ignored

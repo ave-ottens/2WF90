@@ -1,26 +1,52 @@
 import pdb # break into the debugger with pdb.set_trace()
 
-def display_poly(mod, f):
+def display_poly(mod, poly):
+    """Return poly as its string representation."""
     terms = [] # list of strings to be concatenated later
 
-    for c, i in zip(f, range(len(f) - 1, -1, -1)):
-        # c is the coefficient
-        # i is the power of X that the coefficient relates to
+    power = len(poly) - 1
+    for coef in poly:
+        # coef is the coefficient
+        # power is the power of X the coefficient relates to
 
-        # normalize c such that 0 <= c < mod
-        c = c % mod
+        # normalize coef such that 0 <= coef < mod
+        coef = coef % mod
 
-        # we ignore the coefficient if it is zero
-        if c > 0:
-            if i > 1:
-                terms.append(f'{c}X^{i}')
-            elif i == 1:
-                terms.append(f'{c}X')
-            else:
-                terms.append(str(c))
+        # case distinction: ignore coefficients that are zero
+        if coef == 1:
+            if power == 0:
+                terms.append('1')
+            elif power == 1:
+                terms.append('X')
+            elif power > 1:
+                terms.append(f'X^{power}')
+        elif coef > 1:
+            if power == 0:
+                terms.append(str(coef))
+            elif power == 1:
+                terms.append(f'{coef}X')
+            elif power > 1:
+                terms.append(f'{coef}X^{power}')
+
+        power = power - 1
 
     # return terms with '+' symbols inbetween
     return '+'.join(terms)
+
+def deg_poly(mod, poly):
+    """Return the degree of poly. (See Section 2.2)"""
+    power = len(poly) - 1
+
+    # find the first non-zero coefficient (after taking the mod)
+    for coef in poly:
+        coef = coef % mod
+
+        if not coef == 0:
+            return power # return power related to coefficient
+
+        power = power - 1
+
+    return 0 # non-zero coefficient could not be found
 
 def add_poly(mod, f, g):
     return # list of coefficients, highest degree first
@@ -46,7 +72,7 @@ def equals_poly_mod(mod, f, g, h):
     return # "TRUE" or "FALSE"
 
 def irreducible(mod, f):
-    return # "TRUE" or "FALSE"
+    return
 
 def find_irred(mod, deg):
     return

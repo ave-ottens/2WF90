@@ -5,7 +5,7 @@ import field
 
 # helper method
 def string_to_poly(argument):
-    """Convert a string to a coefficient list"""
+    """Convert a string to a coefficient list."""
     # remove '{' and '}' at ends of the string
     without_brackets = argument[1:-1]
     # split into pieces where commas are encountered

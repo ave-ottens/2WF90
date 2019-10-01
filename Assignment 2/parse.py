@@ -2,11 +2,11 @@ import sys # used for input/output
 import re  # used for removing whitespace
 import poly
 import field
-import pdb
 
-# helper method
 def string_to_poly(argument):
     """Convert a string to a coefficient list."""
+    if argument == '{}':
+        return []
     # remove '{' and '}' at ends of the string
     without_brackets = argument[1:-1]
     # split into pieces where commas are encountered
@@ -135,18 +135,23 @@ for line in sys.stdin:
     if command == 'mod':
         mod = int(argument)
         sys.stdout.write(line) # still echo the command for inspection
+
     elif command == 'f':
         f = string_to_poly(argument)
         sys.stdout.write(line)
+
     elif command == 'g':
         g = string_to_poly(argument)
         sys.stdout.write(line)
+
     elif command == 'h':
         h = string_to_poly(argument)
         sys.stdout.write(line)
+
     elif command == 'deg':
         deg = int(argument)
         sys.stdout.write(line)
+
     elif command == 'mod-poly':
         mod_poly = string_to_poly(argument)
         sys.stdout.write(line)

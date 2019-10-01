@@ -1,5 +1,3 @@
-import pdb # break into the debugger with pdb.set_trace()
-
 def display_poly(mod, poly):
     """Return poly as its string representation."""
     terms = [] # list of strings to be concatenated later
@@ -72,6 +70,18 @@ def equals_poly_mod(mod, f, g, h):
     return # "TRUE" or "FALSE"
 
 def irreducible(mod, f):
+    """
+    work in progress ;-)
+    t = 1
+    q = deg_poly(mod, f)
+
+    def generate_divisor():
+        poly = [0] *
+        return
+
+    while True:
+        _, _, gcd = euclid_poly(mod, f, )
+    """
     return
 
 def find_irred(mod, deg):

@@ -12,7 +12,7 @@ if len(sys.argv) == 3:
     output = open(sys.argv[2], 'w', encoding='utf-8')
 else:
     input  = sys.stdin
-    output = output
+    output = sys.stdout
 
 # parsed variables
 mod = None

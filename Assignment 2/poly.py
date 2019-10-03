@@ -57,7 +57,10 @@ def add_poly(mod, f, g):
 
     # add element of f with index i with element of g with index i 
     sumPoly = [sum(x) for x in zip(*listFG)]
-    output = display_poly(mod, sumPoly)
+    output = sumPoly.copy()
+
+    for i in range(len(output)):
+        output[i] = output[i] % mod
 
     return output
 
@@ -74,7 +77,10 @@ def subtract_poly(mod, f, g):
     diffFG = [0] * maxLen
     for i in range(maxLen):
         diffFG[i] = f[i] - g[i]
-    output = display_poly(mod, diffFG)
+    output = diffFG.copy()
+
+    for i in range(len(output)):
+        output[i] = output[i] % mod
 
     return output
 
@@ -95,14 +101,60 @@ def multiply_poly(mod, f, g):
             outputNumber = digit1 * digit2
             multFG[-(1+i+j)] += outputNumber
 
-    output = display_poly(mod, multFG)
+    output = multFG.copy()
   
+    for i in range(len(output)):
+        output[i] = output[i] % mod
+
     return output
 
 def long_div_poly(mod, f, g):
-    q = None
-    r = None
-    return (q, r)
+    q = [0]
+    r = f
+
+    if g == [0]:
+        return {
+            "answ-q": 'error',
+            "answ-r": 'error'
+        }
+
+    degR = deg_poly(mod, r)
+    degG = deg_poly(mod, g)
+
+    while degR >= degG:
+
+        coefficient_q = degR - degG
+
+        x_pow_coef_q = [1] + [0]*coefficient_q
+
+        while r[0] / g[0] != 0:
+            r[0] += mod
+        second_part = multiply_poly(mod,[r[0] / g[0]], x_pow_coef_q)
+
+        # q = q + second_part
+        q = add_poly(mod, q, second_part)
+
+        #lc(r)/lc(g) * x^(deg(r) - deg(g)) * g
+        second_part_g = multiply_poly(mod,second_part, g)
+
+        # r = r - second_part_g
+        r = subtract_poly(mod, r, second_part_g)
+
+    # remove preceding zeroes
+    while q[0] == 0 and not len(q) == 1:
+        q = q[1:]
+    while r[0] == 0 and not len(r) == 1:
+        r = r[1:]
+
+    # apply modulo
+    q = mod_poly(q, m)
+    r = mod_poly(r, m)
+
+
+    return {
+        "answ-q": q,
+        "answ-r": r
+    }
 
 def euclid_poly(mod, f, g):
     a = None

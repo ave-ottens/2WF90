@@ -33,6 +33,7 @@ def display_poly(mod, f):
 
 def deg_poly(mod, f):
     """Return the degree of polynomial f. (See Section 2.2)"""
+    
     power = len(f) - 1
 
     # find the first non-zero coefficient (after taking the mod)
@@ -46,21 +47,37 @@ def deg_poly(mod, f):
 
     return 0 # non-zero coefficient could not be found
 
+def mod_poly(mod, f):
+    for i in range(0, len(f)):
+        f[i] = f[i] % mod
+
+    return f
+
+def pop_zeros(f):
+    i = 0
+    while i < (len(f) - 1):
+        if (f[i] == 0):
+            f.pop(0)
+            continue
+        break
+
+    return f
+
 def add_poly(mod, f, g):
     listFG = f, g    
     maxLen = max(map(len, listFG))
         
-    # add digits
+    # add digits to make f and g of equal length
     for digits in listFG:
         while len(digits) < maxLen:
             digits.insert(0, 0)
 
-    # add element of f with index i with element of g with index i 
+    # add element of f with index i with element of g with index i and do this for all elements
     sumPoly = [sum(x) for x in zip(*listFG)]
-    output = sumPoly.copy()
 
-    for i in range(len(output)):
-        output[i] = output[i] % mod
+    # do modular reduction and then pop all unnecessary zeros 
+    sumPolyMod = mod_poly(mod, sumPoly)
+    output = pop_zeros(sumPolyMod)
 
     return output
 
@@ -68,7 +85,7 @@ def subtract_poly(mod, f, g):
     listFG = f, g
     maxLen = max(map(len, listFG))
         
-    # add digits
+    # add digits to make f and g of equal length
     for digits in listFG:
         while len(digits) < maxLen:
             digits.insert(0, 0) 
@@ -77,10 +94,10 @@ def subtract_poly(mod, f, g):
     diffFG = [0] * maxLen
     for i in range(maxLen):
         diffFG[i] = f[i] - g[i]
-    output = diffFG.copy()
 
-    for i in range(len(output)):
-        output[i] = output[i] % mod
+    # do modular reduction and then pop all unnecessary zeros 
+    diffFGMod = mod_poly(mod, diffFG)
+    output = pop_zeros(diffFGMod)
 
     return output
 
@@ -88,51 +105,51 @@ def multiply_poly(mod, f, g):
     listFG = f, g    
     maxLen = max(map(len, listFG))
         
+    # add digits to make f and g of equal length
     for digits in listFG:
         while len(digits) < maxLen:
             digits.insert(0, 0)
 
-    multFG = [0]*2*maxLen
+    # add zero's to make sure that when multiplying it's possible to each element and have room for it in list multFG 
+    multFG = [0] * 2 * maxLen
 
+    # do the multiplication 
     for i in range(0, maxLen):
-        digit2 = g[-(i+1)]
+        digit2 = g[-(i + 1)]
         for j in range(0, maxLen):
-            digit1 = f[-(j+1)]
+            digit1 = f[-(j + 1)]
             outputNumber = digit1 * digit2
-            multFG[-(1+i+j)] += outputNumber
-
-    output = multFG.copy()
+            multFG[-(1 + i + j)] += outputNumber
   
-    for i in range(len(output)):
-        output[i] = output[i] % mod
+    # do modular reduction and then pop all unnecessary zeros 
+    multFGMod = mod_poly(mod, multFG)
+    output = pop_zeros(multFGMod)
 
-    return output
+    return multFG
 
 def long_div_poly(mod, f, g):
     q = [0]
     r = f
 
     if g == [0]:
-        return {
-            "answ-q": 'error',
-            "answ-r": 'error'
-        }
+        return 'ERROR' 
 
+    # calculate the degree of r and g 
     degR = deg_poly(mod, r)
     degG = deg_poly(mod, g)
 
     while degR >= degG:
-
         coefficient_q = degR - degG
 
-        x_pow_coef_q = [1] + [0]*coefficient_q
+        x_pow_coef_q = [1] + [0] * coefficient_q
 
-        while r[0] / g[0] != 0:
+        while r[0] / g[0] % 1 != 0:
             r[0] += mod
-        second_part = multiply_poly(mod,[r[0] / g[0]], x_pow_coef_q)
+        
+        second_part = multiply_poly(mod,[r[0] // g[0]], x_pow_coef_q)
 
         # q = q + second_part
-        q = add_poly(mod, q, second_part)
+        q = add_poly(mod,q, second_part)
 
         #lc(r)/lc(g) * x^(deg(r) - deg(g)) * g
         second_part_g = multiply_poly(mod,second_part, g)
@@ -140,21 +157,16 @@ def long_div_poly(mod, f, g):
         # r = r - second_part_g
         r = subtract_poly(mod, r, second_part_g)
 
-    # remove preceding zeroes
-    while q[0] == 0 and not len(q) == 1:
-        q = q[1:]
-    while r[0] == 0 and not len(r) == 1:
-        r = r[1:]
+        degR = deg_poly(mod, r)
+        degG = deg_poly(mod, g)
 
-    # apply modulo
-    q = mod_poly(q, m)
-    r = mod_poly(r, m)
+    # pop the zeros and apply modulo
+    q_popped = pop_zeros(q)
+    r_popped = pop_zeros(r)
+    q = mod_poly(mod, q_popped)
+    r = mod_poly(mod, r_popped)
 
-
-    return {
-        "answ-q": q,
-        "answ-r": r
-    }
+    return q, r
 
 def euclid_poly(mod, f, g):
     a = None

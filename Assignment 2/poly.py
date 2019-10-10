@@ -63,6 +63,20 @@ def pop_zeros(f):
 
     return f
 
+def modular_inversion(mod, f):
+    r = f % mod
+    i = 1
+    while r != 1 and i <= mod:
+        i += 1
+        r = i * f % mod
+    
+    if r == 1:
+        return i
+    else:
+        return "NO INV"
+
+    return x % m
+
 def add_poly(mod, f, g):
     listFG = f, g    
     maxLen = max(map(len, listFG))
@@ -191,7 +205,9 @@ def euclid_poly(mod, f, g):
     y, v = [0], [1]
     a, b = f.copy(), g.copy()
     eqZero = False
+    print("preloop", a, b)
     while not eqZero:
+        print("loopie")
         [q, r] = long_div_poly(mod, a, b)
         print(q,r)
         a = b
@@ -212,11 +228,17 @@ def euclid_poly(mod, f, g):
             eqZero = True
 
     d = a
-    a = x
-    b = y
+    if a[0] != 1:
+        invA = modular_inversion(mod, a[0])
+        d = [1]
+    else:
+        invA = a[0]
+
+    a = multiply_poly(mod, x, [invA])
+    b = multiply_poly(mod, y, [invA])
     return a, b, d
 
-print(euclid_poly(2, [1, 0, 1], [1, 0, 0, 1]))
+print(euclid_poly(7, [1, 1, 1], [2, -2]))
 
 def equals_poly_mod(mod, f, g, h):
     return # True or False
@@ -264,3 +286,4 @@ def find_irred(mod, deg):
         return answer
     else:
         return 'ERROR'
+

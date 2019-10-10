@@ -100,17 +100,16 @@ for line in input:
         output.write(line)
 
     # output commands like [answer] are automatically ignored
-    
     if method == 'display-poly' and mod and not f == None:
         answer = poly.display_poly(mod, f)
-        output.write(f'[answer]\t{answer}\n')
+        output.write(f'[answer] {answer}\n')
         mod = None
         f   = None
 
     elif method == 'add-poly' and mod and not f == None and not g == None:
         answer = poly.add_poly(mod, f, g)
         answer = poly.display_poly(mod, answer)
-        output.write(f'[answer]\t{answer}\n')
+        output.write(f'[answer] {answer}\n')
         mod = None
         f   = None
         g   = None
@@ -118,7 +117,7 @@ for line in input:
     elif method == 'subtract-poly' and mod and not f == None and not g == None:
         answer = poly.subtract_poly(mod, f, g)
         answer = poly.display_poly(mod, answer)
-        output.write(f'[answer]\t{answer}\n')
+        output.write(f'[answer] {answer}\n')
         mod = None
         f   = None
         g   = None
@@ -126,7 +125,7 @@ for line in input:
     elif method == 'multiply-poly' and mod and not f == None and not g == None:
         answer = poly.multiply_poly(mod, f, g)
         answer = poly.display_poly(mod, answer)
-        output.write(f'[answer]\t{answer}\n')
+        output.write(f'[answer] {answer}\n')
         mod = None
         f   = None
         g   = None
@@ -135,8 +134,8 @@ for line in input:
         q, r = poly.long_div_poly(mod, f, g)
         q = poly.display_poly(mod, q)
         r = poly.display_poly(mod, r)
-        output.write(f'[answ-q]\t{q}\n')
-        output.write(f'[answ-r]\t{r}\n')
+        output.write(f'[answ-q] {q}\n')
+        output.write(f'[answ-r] {r}\n')
         mod = None
         f   = None
         g   = None
@@ -146,16 +145,16 @@ for line in input:
         a = poly.display_poly(mod, a)
         b = poly.display_poly(mod, b)
         d = poly.display_poly(mod, d)
-        output.write(f'[answ-a]\t{a}\n')
-        output.write(f'[answ-b]\t{b}\n')
-        output.write(f'[answ-d]\t{d}\n')
+        output.write(f'[answ-a] {a}\n')
+        output.write(f'[answ-b] {b}\n')
+        output.write(f'[answ-d] {d}\n')
         mod = None
         f   = None
         g   = None
 
     elif method == 'equals-poly-mod' and mod and not f == None and not g == None and not h == None:
         answer = poly.equals_poly_mod(mod, f, g, h)
-        output.write(f'[answer]\t{answer}\n')
+        output.write(f'[answer] {answer}\n')
         mod = None
         f   = None
         g   = None
@@ -163,14 +162,14 @@ for line in input:
 
     elif method == 'irreducible' and mod and not f == None:
         answer = poly.irreducible(mod, f)
-        output.write(f'[answer]\t{answer}\n')
+        output.write(f'[answer] {answer}\n')
         mod = None
         f   = None
 
     elif method == 'find-irred' and mod and deg:
         answer = poly.find_irred(mod, deg)
         answer = poly.display_poly(mod, answer)
-        output.write(f'[answer]\t{answer}\n')
+        output.write(f'[answer] {answer}\n')
         mod = None
         deg = None
 

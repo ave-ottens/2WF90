@@ -45,7 +45,7 @@ def deg_poly(mod, f):
 
         power = power - 1
 
-    return 0 # non-zero coefficient could not be found
+    return -1 # non-zero coefficient could not be found
 
 def mod_poly(mod, f):
     for i in range(0, len(f)):
@@ -102,7 +102,8 @@ def subtract_poly(mod, f, g):
     return output
 
 def multiply_poly(mod, f, g):
-    listFG = f, g    
+    numberF, numberG = f.copy(), g.copy()
+    listFG = numberF, numberG    
     maxLen = max(map(len, listFG))
         
     # add digits to make f and g of equal length
@@ -115,9 +116,9 @@ def multiply_poly(mod, f, g):
 
     # do the multiplication 
     for i in range(0, maxLen):
-        digit2 = g[-(i + 1)]
+        digit2 = numberG[-(i + 1)]
         for j in range(0, maxLen):
-            digit1 = f[-(j + 1)]
+            digit1 = numberF[-(j + 1)]
             outputNumber = digit1 * digit2
             multFG[-(1 + i + j)] += outputNumber
   
@@ -125,40 +126,57 @@ def multiply_poly(mod, f, g):
     multFGMod = mod_poly(mod, multFG)
     output = pop_zeros(multFGMod)
 
-    return multFG
-
+    return output
+  
 def long_div_poly(mod, f, g):
     q = [0]
+    rem = [0]
     r = f
 
     if g == [0]:
-        return 'ERROR' 
+        return 'ERROR', 'ERROR' 
 
     # calculate the degree of r and g 
     degR = deg_poly(mod, r)
     degG = deg_poly(mod, g)
-
     while degR >= degG:
         coefficient_q = degR - degG
-
         x_pow_coef_q = [1] + [0] * coefficient_q
-
-        while r[0] / g[0] % 1 != 0:
+        bestR = mod
+        rem_part = [0]
+        tempQ = r[0] // g[0]
+        while r[0] % g[0] != 0:
             r[0] += mod
-        
-        second_part = multiply_poly(mod,[r[0] // g[0]], x_pow_coef_q)
+            bestR = min(bestR, r[0] % g[0])
+            tempQ = r[0] // g[0]
+            if r[0] >= g[0] * mod and r[0] % g[0] == bestR:
+                tempQ = r[0] // g[0] % mod
+            else: 
+                continue
+            break
+        second_part = multiply_poly(mod,[tempQ], x_pow_coef_q)
 
         # q = q + second_part
-        q = add_poly(mod,q, second_part)
+        q = add_poly(mod, q, second_part)
 
         #lc(r)/lc(g) * x^(deg(r) - deg(g)) * g
-        second_part_g = multiply_poly(mod,second_part, g)
+        second_part_g = multiply_poly(mod, second_part, g)
 
         # r = r - second_part_g
         r = subtract_poly(mod, r, second_part_g)
 
+        rem_part = [bestR] + [0] * (degR)
+        rem = add_poly(mod, rem, rem_part)
+
+        r = subtract_poly(mod, r, rem_part)
+
+        pop_zeros(r)
+        pop_zeros(g)
+
         degR = deg_poly(mod, r)
         degG = deg_poly(mod, g)
+
+    r = add_poly(mod, r, rem)
 
     # pop the zeros and apply modulo
     q_popped = pop_zeros(q)
@@ -169,10 +187,36 @@ def long_div_poly(mod, f, g):
     return q, r
 
 def euclid_poly(mod, f, g):
-    a = None
-    b = None
-    d = None
-    return (a, b, d)
+    x, u = [1], [0]
+    y, v = [0], [1]
+    a, b = f.copy(), g.copy()
+    eqZero = False
+    while not eqZero:
+        [q, r] = long_div_poly(mod, a, b)
+        print(q,r)
+        a = b
+        b = r
+        print(a,b)
+        xPrime = x
+        yPrime = y
+        x = u
+        y = v
+        qu = multiply_poly(mod, u, q)
+        qv = multiply_poly(mod, v, q)
+        u = subtract_poly(mod, xPrime, qu)
+        v = subtract_poly(mod, yPrime, qv)
+        pop_zeros(a)
+        pop_zeros(b)
+        print(x, y, u, v)
+        if (b[0] == 0):
+            eqZero = True
+
+    d = a
+    a = x
+    b = y
+    return a, b, d
+
+print(euclid_poly(2, [1, 0, 1], [1, 0, 0, 1]))
 
 def equals_poly_mod(mod, f, g, h):
     return # True or False

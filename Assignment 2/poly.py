@@ -75,8 +75,6 @@ def modular_inversion(mod, f):
     else:
         return "NO INV"
 
-    return x % m
-
 def add_poly(mod, f, g):
     listFG = f, g    
     maxLen = max(map(len, listFG))

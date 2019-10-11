@@ -33,7 +33,7 @@ def display_poly(mod, f):
 
 def deg_poly(mod, f):
     """Return the degree of polynomial f. (See Section 2.2)"""
-    
+
     power = len(f) - 1
 
     # find the first non-zero coefficient (after taking the mod)
@@ -69,16 +69,16 @@ def modular_inversion(mod, f):
     while r != 1 and i <= mod:
         i += 1
         r = i * f % mod
-    
+
     if r == 1:
         return i
     else:
         return "NO INV"
 
 def add_poly(mod, f, g):
-    listFG = f, g    
+    listFG = f, g
     maxLen = max(map(len, listFG))
-        
+
     # add digits to make f and g of equal length
     for digits in listFG:
         while len(digits) < maxLen:
@@ -87,7 +87,7 @@ def add_poly(mod, f, g):
     # add element of f with index i with element of g with index i and do this for all elements
     sumPoly = [sum(x) for x in zip(*listFG)]
 
-    # do modular reduction and then pop all unnecessary zeros 
+    # do modular reduction and then pop all unnecessary zeros
     sumPolyMod = mod_poly(mod, sumPoly)
     output = pop_zeros(sumPolyMod)
 
@@ -96,18 +96,18 @@ def add_poly(mod, f, g):
 def subtract_poly(mod, f, g):
     listFG = f, g
     maxLen = max(map(len, listFG))
-        
+
     # add digits to make f and g of equal length
     for digits in listFG:
         while len(digits) < maxLen:
-            digits.insert(0, 0) 
+            digits.insert(0, 0)
 
     # difference between the digits from f with g according to index in each list
     diffFG = [0] * maxLen
     for i in range(maxLen):
         diffFG[i] = f[i] - g[i]
 
-    # do modular reduction and then pop all unnecessary zeros 
+    # do modular reduction and then pop all unnecessary zeros
     diffFGMod = mod_poly(mod, diffFG)
     output = pop_zeros(diffFGMod)
 
@@ -115,40 +115,40 @@ def subtract_poly(mod, f, g):
 
 def multiply_poly(mod, f, g):
     numberF, numberG = f.copy(), g.copy()
-    listFG = numberF, numberG    
+    listFG = numberF, numberG
     maxLen = max(map(len, listFG))
-        
+
     # add digits to make f and g of equal length
     for digits in listFG:
         while len(digits) < maxLen:
             digits.insert(0, 0)
 
-    # add zero's to make sure that when multiplying it's possible to each element and have room for it in list multFG 
+    # add zero's to make sure that when multiplying it's possible to each element and have room for it in list multFG
     multFG = [0] * 2 * maxLen
 
-    # do the multiplication 
+    # do the multiplication
     for i in range(0, maxLen):
         digit2 = numberG[-(i + 1)]
         for j in range(0, maxLen):
             digit1 = numberF[-(j + 1)]
             outputNumber = digit1 * digit2
             multFG[-(1 + i + j)] += outputNumber
-  
-    # do modular reduction and then pop all unnecessary zeros 
+
+    # do modular reduction and then pop all unnecessary zeros
     multFGMod = mod_poly(mod, multFG)
     output = pop_zeros(multFGMod)
 
     return output
-  
+
 def long_div_poly(mod, f, g):
     q = [0]
     rem = [0]
     r = f
 
     if g == [0]:
-        return 'ERROR', 'ERROR' 
+        return 'ERROR', 'ERROR'
 
-    # calculate the degree of r and g 
+    # calculate the degree of r and g
     degR = deg_poly(mod, r)
     degG = deg_poly(mod, g)
     while degR >= degG:
@@ -163,7 +163,7 @@ def long_div_poly(mod, f, g):
             tempQ = r[0] // g[0]
             if r[0] >= g[0] * mod and r[0] % g[0] == bestR:
                 tempQ = r[0] // g[0] % mod
-            else: 
+            else:
                 continue
             break
         second_part = multiply_poly(mod,[tempQ], x_pow_coef_q)
@@ -203,14 +203,14 @@ def euclid_poly(mod, f, g):
     y, v = [0], [1]
     a, b = f.copy(), g.copy()
     eqZero = False
-    print("preloop", a, b)
+    #print("preloop", a, b)
     while not eqZero:
-        print("loopie")
+        #print("loopie")
         [q, r] = long_div_poly(mod, a, b)
-        print(q,r)
+        #print(q,r)
         a = b
         b = r
-        print(a,b)
+        #print(a,b)
         xPrime = x
         yPrime = y
         x = u
@@ -221,7 +221,7 @@ def euclid_poly(mod, f, g):
         v = subtract_poly(mod, yPrime, qv)
         pop_zeros(a)
         pop_zeros(b)
-        print(x, y, u, v)
+        #print(x, y, u, v)
         if (b[0] == 0):
             eqZero = True
 
@@ -236,7 +236,7 @@ def euclid_poly(mod, f, g):
     b = multiply_poly(mod, y, [invA])
     return a, b, d
 
-print(euclid_poly(7, [1, 1, 1], [2, -2]))
+#print(euclid_poly(7, [1, 1, 1], [2, -2]))
 
 def equals_poly_mod(mod, f, g, h):
     return # True or False
@@ -284,4 +284,3 @@ def find_irred(mod, deg):
         return answer
     else:
         return 'ERROR'
-

@@ -131,9 +131,10 @@ for line in input:
         g   = None
 
     elif method == 'long-div-poly' and mod and not f == None and not g == None:
+        pdb.set_trace()
         q, r = poly.long_div_poly(mod, f, g)
-        q = poly.display_poly(mod, q)
-        r = poly.display_poly(mod, r)
+        if q != 'ERROR': q = poly.display_poly(mod, q)
+        if r != 'ERROR': r = poly.display_poly(mod, r)
         output.write(f'[answ-q] {q}\n')
         output.write(f'[answ-r] {r}\n')
         mod = None

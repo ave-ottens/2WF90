@@ -29,7 +29,10 @@ def display_poly(mod, f):
         power = power - 1
 
     # return terms with '+' symbols inbetween
-    return '+'.join(terms)
+    if len(terms) == 0:
+        return '0'
+    else:
+        return '+'.join(terms)
 
 def deg_poly(mod, f):
     """Return the degree of polynomial f. (See Section 2.2)"""

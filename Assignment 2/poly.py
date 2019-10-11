@@ -287,3 +287,10 @@ def find_irred(mod, deg):
         return answer
     else:
         return 'ERROR'
+
+def generate_polys(mod, deg, current = []):
+    if len(current) >= deg + 1:
+        yield current
+    else:
+        for n in range(mod):
+            yield from generate_polys(mod, deg, current.copy() + [n])

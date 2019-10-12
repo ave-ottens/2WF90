@@ -34,6 +34,11 @@ def display_poly(mod, f):
     else:
         return '+'.join(terms)
 
+def construct_poly(deg):
+    poly = [1] + [0] * deg
+    poly[deg - 1] = -1
+    return poly
+
 def deg_poly(mod, f):
     """Return the degree of polynomial f. (See Section 2.2)"""
 
@@ -206,14 +211,11 @@ def euclid_poly(mod, f, g):
     y, v = [0], [1]
     a, b = f.copy(), g.copy()
     eqZero = False
-    #print("preloop", a, b)
+
     while not eqZero:
-        #print("loopie")
         [q, r] = long_div_poly(mod, a, b)
-        #print(q,r)
         a = b
         b = r
-        #print(a,b)
         xPrime = x
         yPrime = y
         x = u
@@ -224,7 +226,6 @@ def euclid_poly(mod, f, g):
         v = subtract_poly(mod, yPrime, qv)
         pop_zeros(a)
         pop_zeros(b)
-        #print(x, y, u, v)
         if (b[0] == 0):
             eqZero = True
 
@@ -239,30 +240,34 @@ def euclid_poly(mod, f, g):
     b = multiply_poly(mod, y, [invA])
     return a, b, d
 
-#print(euclid_poly(7, [1, 1, 1], [2, -2]))
-
 def equals_poly_mod(mod, f, g, h):
     return # True or False
 
 def irreducible(mod, f):
-    """
-    work in progress ;-)
     t = 1
-    q = deg_poly(mod, f)
+    g = construct_poly(pow(mod, t)) # create polynomial X^q^t
+    gcd = euclid_poly(mod, f, g)[1] # get gcd
 
-    def generate_divisor():
-        poly = [0] *
-        return
+    while gcd == [1]:
+        t = t + 1
+        g = construct_poly(pow(mod, t))
+        gcd = euclid_poly(mod, f, g)[1]
 
-    while True:
-        _, _, gcd = euclid_poly(mod, f, )
-    """
-    return False # True or False
+    # If t = deg(f) return true else false
+    b = False
+    if t == deg_poly(mod, f):
+        b = True
+
+    return b # True or False
 
 def find_irred(mod, deg):
     # generate polynomials recursively, until the right one is found
+    
     def find_irred_recursive(f = []):
+        print('loop before find_irred resursive')
+        
         if len(f) < deg - 1:
+            print('len(f) < deg - 1')
             for n in range(0, mod):
                 result = find_irred_recursive([n] + f)
                 if not result == None:
@@ -270,13 +275,17 @@ def find_irred(mod, deg):
 
         elif len(f) == deg - 1:
             # ensure that the left coefficient isn't zero
+            print('len(f) == deg - 1')
             for n in range(1, mod):
                 result = find_irred_recursive([n] + f)
                 if not result == None:
                     return result
 
         else:
-            if irreducible(mod, f):
+            print('else be like')
+            checkIrr = irreducible(mod, f)
+            print(checkIrr)
+            if checkIrr:
                 return f
             else:
                 return None
@@ -288,9 +297,11 @@ def find_irred(mod, deg):
     else:
         return 'ERROR'
 
-def generate_polys(mod, deg, current = []):
+print(find_irred(2, 3))
+
+def generate_poly(mod, deg, current = []):
     if len(current) >= deg + 1:
         yield current
     else:
         for n in range(mod):
-            yield from generate_polys(mod, deg, current.copy() + [n])
+            yield from generate_poly(mod, deg, current.copy() + [n])

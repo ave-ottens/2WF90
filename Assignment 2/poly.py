@@ -243,7 +243,13 @@ def euclid_poly(mod, f, g):
     return a, b, d
 
 def equals_poly_mod(mod, f, g, h):
-    return # True or False
+    if h == [] or h == [0]:
+        return False
+    remF = long_div_poly(mod, f, h)[1]
+    remG = long_div_poly(mod, g, h)[1]
+    if remF == remG:
+        return True
+    return False
 
 def irreducible(mod, f):
     t = 1
@@ -299,7 +305,7 @@ def find_irred(mod, deg):
     else:
         return 'ERROR'
 
-print(find_irred(2, 3))
+# print(find_irred(2, 3))
 
 def generate_poly(mod, deg, current = []):
     if len(current) >= deg + 1:

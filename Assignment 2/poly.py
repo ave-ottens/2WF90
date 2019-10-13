@@ -214,6 +214,8 @@ def euclid_poly(mod, f, g):
 
     while not eqZero:
         [q, r] = long_div_poly(mod, a, b)
+        if q == "ERROR":
+            return "ERROR"
         a = b
         b = r
         xPrime = x

@@ -284,6 +284,16 @@ def irreducible(mod, f):
 
 # Give an irreducible polynomial of degree [deg]
 def find_irred(mod, deg):
+    for p in generate_polys(mod, deg):
+        if not deg_poly(mod, p) == deg:
+            continue
+        if irreducible(mod, p):
+            return p
+
+    return 'ERROR'
+
+    """
+    OLD CODE
     # generate polynomials recursively, until the right one is found
 
     def find_irred_recursive(f = []):
@@ -319,6 +329,7 @@ def find_irred(mod, deg):
         return answer
     else:
         return 'ERROR'
+    """
 
 def generate_polys(mod, deg, current = []):
     if len(current) >= deg + 1:

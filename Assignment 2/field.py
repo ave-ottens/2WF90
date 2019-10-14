@@ -1,8 +1,40 @@
+from poly import *
+
 def add_table(mod, mod_poly):
-    return
+    if not irreducible(mod_poly):
+        return 'ERROR'
+
+    deg = deg_poly(mod, mod_poly)
+    table = [[]]
+
+    for p in generate_polys(mod, deg - 1):
+        table[0].append(p)
+
+    for i in range(1, len(table[0])):
+        table.append([])
+        for p in table[0]:
+            table[i].append(add_poly(mod, table[0][i], p))
+
+    table = [[display_poly(mod, p) for p in row] for row in table]
+    rows  = [', '.join(row) for row in table]
+    return '{' + '; '.join(rows) + '}'
+
 
 def mult_table(mod, mod_poly):
-    return
+    deg = deg_poly(mod, mod_poly)
+    table = [[]]
+
+    for p in generate_polys(mod, deg - 1):
+        table[0].append(p)
+
+    for i in range(1, len(table[0])):
+        table.append([])
+        for p in table[0]:
+            table[i].append(multiply_poly(mod, table[0][i], p))
+
+    table = [[display_poly(mod, p) for p in row] for row in table]
+    rows  = [', '.join(row) for row in table]
+    return '{' + '; '.join(rows) + '}'
 
 def display_field(mod, mod_poly, a):
     return

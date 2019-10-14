@@ -320,12 +320,12 @@ def find_irred(mod, deg):
     else:
         return 'ERROR'
 
-def generate_poly(mod, deg, current = []):
+def generate_polys(mod, deg, current = []):
     if len(current) >= deg + 1:
         yield current
     else:
         for n in range(mod):
-            yield from generate_poly(mod, deg, current.copy() + [n])
+            yield from generate_polys(mod, deg, current.copy() + [n])
 
 # print(display_poly(7, [1, 2, 6]))
 # print(display_poly(5, [1, 2, 6]))

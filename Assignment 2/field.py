@@ -1,7 +1,7 @@
 from poly import *
 
 def add_table(mod, mod_poly):
-    if not irreducible(mod_poly):
+    if not irreducible(mod, mod_poly):
         return 'ERROR'
 
     deg = deg_poly(mod, mod_poly)

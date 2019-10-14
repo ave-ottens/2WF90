@@ -1,3 +1,4 @@
+# Give the standard representative of the following polynomial 
 def display_poly(mod, f):
     """Return polynomial f as its string representation."""
     terms = [] # list of strings to be concatenated later
@@ -7,7 +8,7 @@ def display_poly(mod, f):
         # coef is the coefficient
         # power is the power of X the coefficient relates to
 
-        # normalize coef such that 0 <= coef < mod
+        # normalize chew such that 0 <= coef < mod
         coef = coef % mod
 
         # case distinction: ignore coefficients that are zero
@@ -36,7 +37,7 @@ def display_poly(mod, f):
 
 def construct_poly(deg):
     poly = [1] + [0] * deg
-    poly[deg - 1] = -1
+    poly[deg - 1] = -1 # -1 because you need to do X^q^t - X 
     return poly
 
 def deg_poly(mod, f):
@@ -55,6 +56,7 @@ def deg_poly(mod, f):
 
     return -1 # non-zero coefficient could not be found
 
+# An irreducible polynomial 
 def mod_poly(mod, f):
     for i in range(0, len(f)):
         f[i] = f[i] % mod
@@ -83,6 +85,7 @@ def modular_inversion(mod, f):
     else:
         return "NO INV"
 
+# Apply addition to the following two polynomials
 def add_poly(mod, f, g):
     listFG = f, g
     maxLen = max(map(len, listFG))
@@ -101,6 +104,7 @@ def add_poly(mod, f, g):
 
     return output
 
+# Apply subtraction to the following two polynomials
 def subtract_poly(mod, f, g):
     listFG = f, g
     maxLen = max(map(len, listFG))
@@ -121,6 +125,7 @@ def subtract_poly(mod, f, g):
 
     return output
 
+# Apply multiplication to the following two polynomials
 def multiply_poly(mod, f, g):
     numberF, numberG = f.copy(), g.copy()
     listFG = numberF, numberG
@@ -148,6 +153,7 @@ def multiply_poly(mod, f, g):
 
     return output
 
+# Apply long division of the first polynomials by the second
 def long_div_poly(mod, f, g):
     q = [0]
     rem = [0]
@@ -206,6 +212,7 @@ def long_div_poly(mod, f, g):
 
     return q, r
 
+# Euclid's Extended Algorithm
 def euclid_poly(mod, f, g):
     x, u = [1], [0]
     y, v = [0], [1]
@@ -242,6 +249,7 @@ def euclid_poly(mod, f, g):
     b = multiply_poly(mod, y, [invA])
     return a, b, d
 
+# Test whether the following two polynomials are equal
 def equals_poly_mod(mod, f, g, h):
     if h == [] or h == [0]:
         return False
@@ -251,15 +259,21 @@ def equals_poly_mod(mod, f, g, h):
         return True
     return False
 
+# Test whether the following polynomial is irreducible 
 def irreducible(mod, f):
     t = 1
     g = construct_poly(pow(mod, t)) # create polynomial X^q^t
-    gcd = euclid_poly(mod, f, g)[1] # get gcd
+    gcd = euclid_poly(mod, f, g)[2] # get gcd
 
     while gcd == [1]:
         t = t + 1
         g = construct_poly(pow(mod, t))
-        gcd = euclid_poly(mod, f, g)[1]
+        gcd = euclid_poly(mod, f, g)[2]        
+        n = deg_poly(mod, f) 
+        
+        if t <= n: 
+            continue
+        break
 
     # If t = deg(f) return true else false
     b = False
@@ -268,6 +282,7 @@ def irreducible(mod, f):
 
     return b # True or False
 
+# Give an irreducible polynomial of degree [deg]
 def find_irred(mod, deg):
     # generate polynomials recursively, until the right one is found
     
@@ -292,7 +307,7 @@ def find_irred(mod, deg):
         else:
             print('else be like')
             checkIrr = irreducible(mod, f)
-            print(checkIrr)
+            print('check irreducibility:', checkIrr)
             if checkIrr:
                 return f
             else:
@@ -305,11 +320,48 @@ def find_irred(mod, deg):
     else:
         return 'ERROR'
 
-# print(find_irred(2, 3))
-
 def generate_poly(mod, deg, current = []):
     if len(current) >= deg + 1:
         yield current
     else:
         for n in range(mod):
             yield from generate_poly(mod, deg, current.copy() + [n])
+
+# print(display_poly(7, [1, 2, 6]))
+# print(display_poly(5, [1, 2, 6]))
+# print(display_poly(7, [1, 2, 0]))
+# print(display_poly(7, [1, 2, 7]))
+# print(display_poly(7, [0, 1, 2, 0]))
+# print(display_poly(7, [-1, 0, 1, 3]))
+# print(display_poly(7, [0, 1, 10, -1, 0, 2, 3]))
+# print(display_poly(7, [0]))
+# print(display_poly(7, [0, 0]))
+
+# print(add_poly(7, [5, 2, 3], [2, 3, 4, 0]))
+
+# print(subtract_poly(7, [1, 2, 3], [2, 3, 4, 0]))
+
+# print(multiply_poly(7, [6], [5]))
+# print(multiply_poly(7, [27], [33]))
+# print(multiply_poly(7, [1, 1, 1], [1, -1]))
+
+# print(long_div_poly(7, [6], [5]))
+# print(long_div_poly(7, [1, 1, 1], [2, -2]))
+# print(long_div_poly(7, [1, 1, 1], [0]))
+
+# print(euclid_poly(7, [1, 1, 1], [2, -2]))
+# print(euclid_poly(7, [1, 0, 1], [1, 0, 0, 1]))
+# print(euclid_poly(2, [1, 0, 1], [1, 0, 0, 1]))
+# print(euclid_poly(7, [1, 1, 1], [0])) 
+# print(euclid_poly(7, [2, 2, 2], [0]))
+
+# print(equals_poly_mod(7, [1, 1, 1], [10], [1, -1]))
+# print(equals_poly_mod(5, [1, 1, 1], [10], [1, -1]))
+# print(equals_poly_mod(7, [1, 1, 1], [3], [0]))
+
+# print(irreducible(2, [1, 1, 1]))
+# print(irreducible(3, [1, 1, 1]))
+
+print(find_irred(2, 3))
+# print(find_irred(2, 3)) THIS IS NOT CORRECT YET
+# print(find_irred(2, 4)) THIS IS NOT CORRECT YET 

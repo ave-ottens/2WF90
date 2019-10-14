@@ -1,47 +1,12 @@
-<<<<<<< HEAD
-from poly import *
-
-=======
 import poly as p
 
 # Produces the addition table of field F
->>>>>>> final
 def add_table(mod, mod_poly):
-    if not irreducible(mod_poly):
-        return 'ERROR'
-
-    deg = deg_poly(mod, mod_poly)
-    table = [[]]
-
-    for p in generate_polys(mod, deg - 1):
-        table[0].append(p)
-
-    for i in range(1, len(table[0])):
-        table.append([])
-        for p in table[0]:
-            table[i].append(add_poly(mod, table[0][i], p))
-
-    table = [[display_poly(mod, p) for p in row] for row in table]
-    rows  = [', '.join(row) for row in table]
-    return '{' + '; '.join(rows) + '}'
-
+    return
 
 # Produces the multiplication table of F
 def mult_table(mod, mod_poly):
-    deg = deg_poly(mod, mod_poly)
-    table = [[]]
-
-    for p in generate_polys(mod, deg - 1):
-        table[0].append(p)
-
-    for i in range(1, len(table[0])):
-        table.append([])
-        for p in table[0]:
-            table[i].append(multiply_poly(mod, table[0][i], p))
-
-    table = [[display_poly(mod, p) for p in row] for row in table]
-    rows  = [', '.join(row) for row in table]
-    return '{' + '; '.join(rows) + '}'
+    return
 
 # Give a representative of the following field element of F in standard form
 def display_field(mod, mod_poly, a):

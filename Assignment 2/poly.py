@@ -1,4 +1,6 @@
-# Give the standard representative of the following polynomial
+from random import randint
+
+# Give the standard representative of the following polynomial 
 def display_poly(mod, f):
     """Return polynomial f as its string representation."""
     terms = [] # list of strings to be concatenated later
@@ -35,11 +37,6 @@ def display_poly(mod, f):
     else:
         return '+'.join(terms)
 
-def construct_poly(deg):
-    poly = [1] + [0] * deg
-    poly[deg - 1] = -1 # -1 because you need to do X^q^t - X
-    return poly
-
 def deg_poly(mod, f):
     """Return the degree of polynomial f. (See Section 2.2)"""
 
@@ -56,7 +53,7 @@ def deg_poly(mod, f):
 
     return -1 # non-zero coefficient could not be found
 
-# An irreducible polynomial
+# An irreducible polynomial 
 def mod_poly(mod, f):
     for i in range(0, len(f)):
         f[i] = f[i] % mod
@@ -96,11 +93,11 @@ def add_poly(mod, f, g):
             digits.insert(0, 0)
 
     # add element of f with index i with element of g with index i and do this for all elements
-    sumPoly = [sum(x) for x in zip(*listFG)]
+    sumFG = [sum(x) for x in zip(*listFG)]
 
     # do modular reduction and then pop all unnecessary zeros
-    sumPolyMod = mod_poly(mod, sumPoly)
-    output = pop_zeros(sumPolyMod)
+    sumFGMod = mod_poly(mod, sumFG)
+    output = pop_zeros(sumFGMod)
 
     return output
 
@@ -259,8 +256,14 @@ def equals_poly_mod(mod, f, g, h):
         return True
     return False
 
-# Test whether the following polynomial is irreducible
+# Test whether the following polynomial is irreducible 
 def irreducible(mod, f):
+    
+    def construct_poly(deg):
+        poly = [1] + [0] * deg
+        poly[deg - 1] = -1 # -1 because you need to do X^q^t - X 
+        return poly
+
     t = 1
     g = construct_poly(pow(mod, t)) # create polynomial X^q^t
     gcd = euclid_poly(mod, f, g)[2] # get gcd
@@ -268,10 +271,10 @@ def irreducible(mod, f):
     while gcd == [1]:
         t = t + 1
         g = construct_poly(pow(mod, t))
-        gcd = euclid_poly(mod, f, g)[2]
-        n = deg_poly(mod, f)
-
-        if t <= n:
+        gcd = euclid_poly(mod, f, g)[2]        
+        n = deg_poly(mod, f) 
+        
+        if t <= n: 
             continue
         break
 
@@ -292,51 +295,23 @@ def find_irred(mod, deg):
 
     return 'ERROR'
 
-    """
-    OLD CODE
-    # generate polynomials recursively, until the right one is found
-
-    def find_irred_recursive(f = []):
-        #print('loop before find_irred resursive')
-
-        if len(f) < deg - 1:
-            #print('len(f) < deg - 1')
-            for n in range(0, mod):
-                result = find_irred_recursive([n] + f)
-                if not result == None:
-                    return result
-
-        elif len(f) == deg - 1:
-            # ensure that the left coefficient isn't zero
-            #print('len(f) == deg - 1')
-            for n in range(1, mod):
-                result = find_irred_recursive([n] + f)
-                if not result == None:
-                    return result
-
-        else:
-            #print('else be like')
-            checkIrr = irreducible(mod, f)
-            #print('check irreducibility:', checkIrr)
-            if checkIrr:
-                return f
-            else:
-                return None
-
-    answer = find_irred_recursive()
-
-    if answer:
-        return answer
-    else:
-        return 'ERROR'
-    """
-
 def generate_polys(mod, deg, current = []):
     if len(current) >= deg + 1:
         yield current
     else:
         for n in range(mod):
             yield from generate_polys(mod, deg, current.copy() + [n])
+
+def random_poly(mod, deg):
+    output = []
+
+    for i in range(deg+1):
+        output.append(randint(0, mod-1))
+    
+    if pop_zeros(output) == [0]:
+        output = random_poly(mod, deg)
+
+    return output
 
 # print(display_poly(7, [1, 2, 6]))
 # print(display_poly(5, [1, 2, 6]))
@@ -363,7 +338,7 @@ def generate_polys(mod, deg, current = []):
 # print(euclid_poly(7, [1, 1, 1], [2, -2]))
 # print(euclid_poly(7, [1, 0, 1], [1, 0, 0, 1]))
 # print(euclid_poly(2, [1, 0, 1], [1, 0, 0, 1]))
-# print(euclid_poly(7, [1, 1, 1], [0]))
+# print(euclid_poly(7, [1, 1, 1], [0])) 
 # print(euclid_poly(7, [2, 2, 2], [0]))
 
 # print(equals_poly_mod(7, [1, 1, 1], [10], [1, -1]))
@@ -373,6 +348,5 @@ def generate_polys(mod, deg, current = []):
 # print(irreducible(2, [1, 1, 1]))
 # print(irreducible(3, [1, 1, 1]))
 
-#print(find_irred(2, 3))
-# print(find_irred(2, 3)) THIS IS NOT CORRECT YET
-# print(find_irred(2, 4)) THIS IS NOT CORRECT YET
+# print(find_irred(2, 3))
+# print(find_irred(2, 4)) 

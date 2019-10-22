@@ -102,14 +102,14 @@ for line in input:
     # output commands like [answer] are automatically ignored
     if method == 'display-poly' and mod and not f == None:
         answer = poly.display_poly(mod, f)
-        output.write(f'[answer] {answer}\n')
+        output.write(f'[answer]\t{answer}\n')
         mod = None
         f   = None
 
     elif method == 'add-poly' and mod and not f == None and not g == None:
         answer = poly.add_poly(mod, f, g)
         answer = poly.display_poly(mod, answer)
-        output.write(f'[answer] {answer}\n')
+        output.write(f'[answer]\t{answer}\n')
         mod = None
         f   = None
         g   = None
@@ -117,7 +117,7 @@ for line in input:
     elif method == 'subtract-poly' and mod and not f == None and not g == None:
         answer = poly.subtract_poly(mod, f, g)
         answer = poly.display_poly(mod, answer)
-        output.write(f'[answer] {answer}\n')
+        output.write(f'[answer]\t{answer}\n')
         mod = None
         f   = None
         g   = None
@@ -125,7 +125,7 @@ for line in input:
     elif method == 'multiply-poly' and mod and not f == None and not g == None:
         answer = poly.multiply_poly(mod, f, g)
         answer = poly.display_poly(mod, answer)
-        output.write(f'[answer] {answer}\n')
+        output.write(f'[answer]\t{answer}\n')
         mod = None
         f   = None
         g   = None
@@ -135,8 +135,8 @@ for line in input:
         q, r = poly.long_div_poly(mod, f, g)
         if q != 'ERROR': q = poly.display_poly(mod, q)
         if r != 'ERROR': r = poly.display_poly(mod, r)
-        output.write(f'[answ-q] {q}\n')
-        output.write(f'[answ-r] {r}\n')
+        output.write(f'[answ-q]\t{q}\n')
+        output.write(f'[answ-r]\t{r}\n')
         mod = None
         f   = None
         g   = None
@@ -144,22 +144,22 @@ for line in input:
     elif method == 'euclid-poly' and mod and not f == None and not g == None:
         answer = poly.euclid_poly(mod, f, g)
         if answer == "ERROR":
-            output.write('[answer] ERROR\n')
+            output.write('[answer]\tERROR\n')
         else:
             a, b, d = answer
             a = poly.display_poly(mod, a)
             b = poly.display_poly(mod, b)
             d = poly.display_poly(mod, d)
-            output.write(f'[answ-a] {a}\n')
-            output.write(f'[answ-b] {b}\n')
-            output.write(f'[answ-d] {d}\n')
+            output.write(f'[answ-a]\t{a}\n')
+            output.write(f'[answ-b]\t{b}\n')
+            output.write(f'[answ-d]\t{d}\n')
         mod = None
         f   = None
         g   = None
 
     elif method == 'equals-poly-mod' and mod and not f == None and not g == None and not h == None:
         answer = poly.equals_poly_mod(mod, f, g, h)
-        output.write(f'[answer] {answer}\n')
+        output.write(f'[answer]\t{answer}\n')
         mod = None
         f   = None
         g   = None
@@ -167,32 +167,32 @@ for line in input:
 
     elif method == 'irreducible' and mod and not f == None:
         answer = poly.irreducible(mod, f)
-        output.write(f'[answer] {answer}\n')
+        output.write(f'[answer]\t{answer}\n')
         mod = None
         f   = None
 
     elif method == 'find-irred' and mod and deg:
         answer = poly.find_irred(mod, deg)
         answer = poly.display_poly(mod, answer)
-        output.write(f'[answer] {answer}\n')
+        output.write(f'[answer]\t{answer}\n')
         mod = None
         deg = None
 
     elif method == 'add-table' and mod and not mod_poly == None:
         answer = field.add_table(mod, mod_poly)
-        output.write(f'[answer] {answer}\n')
+        output.write(f'[answer]\t{answer}\n')
         mod = None
         mod_poly = None
 
     elif method == 'mult-table' and mod and not mod_poly == None:
         answer = field.mult_table(mod, mod_poly)
-        output.write(f'[answer] {answer}\n')
+        output.write(f'[answer]\t{answer}\n')
         mod = None
         mod_poly = None
 
     elif method == 'display-field' and mod and not mod_poly == None and not a == None:
         answer = field.display_field(mod, mod_poly, a)
-        output.write(f'[answer] {answer}\n')
+        output.write(f'[answer]\t{answer}\n')
         mod = None
         mod_poly = None
         a = None
@@ -200,7 +200,7 @@ for line in input:
     elif method == 'add-field' and mod and not mod_poly == None and not a == None and not b == None:
         answer = field.add_field(mod, mod_poly, a, b)
         if answer != 'ERROR': answer = field.display_field(mod, mod_poly, answer)
-        output.write(f'[answer] {answer}\n')
+        output.write(f'[answer]\t{answer}\n')
         mod = None
         mod_poly = None
         a = None
@@ -209,7 +209,7 @@ for line in input:
     elif method == 'subtract-field' and mod and not mod_poly == None and not a == None and not b == None:
         answer = field.subtract_field(mod, mod_poly, a, b)
         if answer != 'ERROR': answer = field.display_field(mod, mod_poly, answer)
-        output.write(f'[answer] {answer}\n')
+        output.write(f'[answer]\t{answer}\n')
         mod = None
         mod_poly = None
         a = None
@@ -218,7 +218,7 @@ for line in input:
     elif method == 'multiply-field' and mod and not mod_poly == None and not a == None and not b == None:
         answer = field.multiply_field(mod, mod_poly, a, b)
         if answer != 'ERROR': answer = field.display_field(mod, mod_poly, answer)
-        output.write(f'[answer] {answer}\n')
+        output.write(f'[answer]\t{answer}\n')
         mod = None
         mod_poly = None
         a = None
@@ -227,7 +227,7 @@ for line in input:
     elif method == 'inverse-field' and mod and not mod_poly == None and not a == None:
         answer = field.inverse_field(mod, mod_poly, a)
         if answer != 'ERROR': answer = field.display_field(mod, mod_poly, answer)
-        output.write(f'[answer] {answer}\n')
+        output.write(f'[answer]\t{answer}\n')
         mod = None
         mod_poly = None
         a = None
@@ -235,7 +235,7 @@ for line in input:
     elif method == 'division-field' and mod and not mod_poly == None and not a == None and not b == None:
         answer = field.division_field(mod, mod_poly, a, b)
         if answer != 'ERROR': answer = field.display_field(mod, mod_poly, answer)
-        output.write(f'[answer] {answer}\n')
+        output.write(f'[answer]\t{answer}\n')
         mod = None
         mod_poly = None
         a = None
@@ -243,9 +243,9 @@ for line in input:
 
     elif method == 'equals-field' and mod and not mod_poly == None and not a == None and not b == None:
         if field.equals_field(mod, mod_poly, a, b):
-            output.write('[answer] TRUE\n')
+            output.write('[answer]\tTRUE\n')
         else:
-            output.write('[answer] FALSE\n')
+            output.write('[answer]\tFALSE\n')
         mod = None
         mod_poly = None
         a = None
@@ -253,9 +253,9 @@ for line in input:
 
     elif method == 'primitive' and mod and not mod_poly == None and not a == None:
         if field.primitive(mod, mod_poly, a, b):
-            output.write('[answer] TRUE\n')
+            output.write('[answer]\tTRUE\n')
         else:
-            output.write('[answer] FALSE\n')
+            output.write('[answer]\tFALSE\n')
         mod = None
         mod_poly = None
         a = None
@@ -264,6 +264,6 @@ for line in input:
     elif method == 'find-prim' and mod and not mod_poly == None:
         answer = field.find_prim(mod, mod_poly)
         if answer != 'ERROR': answer = field.display_field(mod, mod_poly, answer)
-        output.write(f'[answer] {answer}\n')
+        output.write(f'[answer]\t{answer}\n')
         mod = None
         mod_poly = None

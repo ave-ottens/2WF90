@@ -1,6 +1,6 @@
 from random import randint
 
-# Give the standard representative of the following polynomial 
+# Give the standard representative of the following polynomial
 def display_poly(mod, f):
     """Return polynomial f as its string representation."""
     terms = [] # list of strings to be concatenated later
@@ -53,7 +53,6 @@ def deg_poly(mod, f):
 
     return -1 # non-zero coefficient could not be found
 
-# An irreducible polynomial 
 def mod_poly(mod, f):
     for i in range(0, len(f)):
         f[i] = f[i] % mod
@@ -256,12 +255,12 @@ def equals_poly_mod(mod, f, g, h):
         return True
     return False
 
-# Test whether the following polynomial is irreducible 
+# Test whether the following polynomial is irreducible
 def irreducible(mod, f):
-    
+
     def construct_poly(deg):
         poly = [1] + [0] * deg
-        poly[deg - 1] = -1 # -1 because you need to do X^q^t - X 
+        poly[deg - 1] = -1 # -1 because you need to do X^q^t - X
         return poly
 
     t = 1
@@ -271,10 +270,10 @@ def irreducible(mod, f):
     while gcd == [1]:
         t = t + 1
         g = construct_poly(pow(mod, t))
-        gcd = euclid_poly(mod, f, g)[2]        
-        n = deg_poly(mod, f) 
-        
-        if t <= n: 
+        gcd = euclid_poly(mod, f, g)[2]
+        n = deg_poly(mod, f)
+
+        if t <= n:
             continue
         break
 
@@ -307,7 +306,7 @@ def random_poly(mod, deg):
 
     for i in range(deg+1):
         output.append(randint(0, mod-1))
-    
+
     if pop_zeros(output) == [0]:
         output = random_poly(mod, deg)
 
@@ -338,7 +337,7 @@ def random_poly(mod, deg):
 # print(euclid_poly(7, [1, 1, 1], [2, -2]))
 # print(euclid_poly(7, [1, 0, 1], [1, 0, 0, 1]))
 # print(euclid_poly(2, [1, 0, 1], [1, 0, 0, 1]))
-# print(euclid_poly(7, [1, 1, 1], [0])) 
+# print(euclid_poly(7, [1, 1, 1], [0]))
 # print(euclid_poly(7, [2, 2, 2], [0]))
 
 # print(equals_poly_mod(7, [1, 1, 1], [10], [1, -1]))
@@ -349,4 +348,4 @@ def random_poly(mod, deg):
 # print(irreducible(3, [1, 1, 1]))
 
 # print(find_irred(2, 3))
-# print(find_irred(2, 4)) 
+# print(find_irred(2, 4))

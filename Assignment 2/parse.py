@@ -131,7 +131,7 @@ for line in input:
         g   = None
 
     elif method == 'long-div-poly' and mod and not f == None and not g == None:
-        pdb.set_trace()
+        #pdb.set_trace()
         q, r = poly.long_div_poly(mod, f, g)
         if q != 'ERROR': q = poly.display_poly(mod, q)
         if r != 'ERROR': r = poly.display_poly(mod, r)
@@ -142,13 +142,17 @@ for line in input:
         g   = None
 
     elif method == 'euclid-poly' and mod and not f == None and not g == None:
-        a, b, d = poly.euclid_poly(mod, f, g)
-        a = poly.display_poly(mod, a)
-        b = poly.display_poly(mod, b)
-        d = poly.display_poly(mod, d)
-        output.write(f'[answ-a] {a}\n')
-        output.write(f'[answ-b] {b}\n')
-        output.write(f'[answ-d] {d}\n')
+        answer = poly.euclid_poly(mod, f, g)
+        if answer == "ERROR":
+            output.write('[answer] ERROR\n')
+        else:
+            a, b, d = answer
+            a = poly.display_poly(mod, a)
+            b = poly.display_poly(mod, b)
+            d = poly.display_poly(mod, d)
+            output.write(f'[answ-a] {a}\n')
+            output.write(f'[answ-b] {b}\n')
+            output.write(f'[answ-d] {d}\n')
         mod = None
         f   = None
         g   = None
@@ -175,34 +179,91 @@ for line in input:
         deg = None
 
     elif method == 'add-table' and mod and not mod_poly == None:
-        pass # placeholder
+        answer = field.add_table(mod, mod_poly)
+        output.write(f'[answer] {answer}\n')
+        mod = None
+        mod_poly = None
 
     elif method == 'mult-table' and mod and not mod_poly == None:
-        pass # placeholder
+        answer = field.mult_table(mod, mod_poly)
+        output.write(f'[answer] {answer}\n')
+        mod = None
+        mod_poly = None
 
     elif method == 'display-field' and mod and not mod_poly == None and not a == None:
-        pass # placeholder
+        answer = field.display_field(mod, mod_poly, a)
+        output.write(f'[answer] {answer}\n')
+        mod = None
+        mod_poly = None
+        a = None
 
     elif method == 'add-field' and mod and not mod_poly == None and not a == None and not b == None:
-        pass # placeholder
+        answer = field.add_field(mod, mod_poly, a, b)
+        if answer != 'ERROR': answer = field.display_field(mod, mod_poly, answer)
+        output.write(f'[answer] {answer}\n')
+        mod = None
+        mod_poly = None
+        a = None
+        b = None
 
     elif method == 'subtract-field' and mod and not mod_poly == None and not a == None and not b == None:
-        pass # placeholder
+        answer = field.subtract_field(mod, mod_poly, a, b)
+        if answer != 'ERROR': answer = field.display_field(mod, mod_poly, answer)
+        output.write(f'[answer] {answer}\n')
+        mod = None
+        mod_poly = None
+        a = None
+        b = None
 
     elif method == 'multiply-field' and mod and not mod_poly == None and not a == None and not b == None:
-        pass # placeholder
+        answer = field.multiply_field(mod, mod_poly, a, b)
+        if answer != 'ERROR': answer = field.display_field(mod, mod_poly, answer)
+        output.write(f'[answer] {answer}\n')
+        mod = None
+        mod_poly = None
+        a = None
+        b = None
 
     elif method == 'inverse-field' and mod and not mod_poly == None and not a == None:
-        pass # placeholder
+        answer = field.inverse_field(mod, mod_poly, a)
+        if answer != 'ERROR': answer = field.display_field(mod, mod_poly, answer)
+        output.write(f'[answer] {answer}\n')
+        mod = None
+        mod_poly = None
+        a = None
 
     elif method == 'division-field' and mod and not mod_poly == None and not a == None and not b == None:
-        pass # placeholder
+        answer = field.division_field(mod, mod_poly, a, b)
+        if answer != 'ERROR': answer = field.display_field(mod, mod_poly, answer)
+        output.write(f'[answer] {answer}\n')
+        mod = None
+        mod_poly = None
+        a = None
+        b = None
 
     elif method == 'equals-field' and mod and not mod_poly == None and not a == None and not b == None:
-        pass # placeholder
+        if field.equals_field(mod, mod_poly, a, b):
+            output.write('[answer] TRUE\n')
+        else:
+            output.write('[answer] FALSE\n')
+        mod = None
+        mod_poly = None
+        a = None
+        b = None
 
     elif method == 'primitive' and mod and not mod_poly == None and not a == None:
-        pass # placeholder
+        if field.primitive(mod, mod_poly, a, b):
+            output.write('[answer] TRUE\n')
+        else:
+            output.write('[answer] FALSE\n')
+        mod = None
+        mod_poly = None
+        a = None
+        b = None
 
     elif method == 'find-prim' and mod and not mod_poly == None:
-        pass # placeholder
+        answer = field.find_prim(mod, mod_poly)
+        if answer != 'ERROR': answer = field.display_field(mod, mod_poly, answer)
+        output.write(f'[answer] {answer}\n')
+        mod = None
+        mod_poly = None

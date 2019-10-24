@@ -335,11 +335,11 @@ def random_poly(mod, deg):
 # print(long_div_poly(7, [1, 1, 1], [2, -2]))
 # print(long_div_poly(7, [1, 1, 1], [0]))
 
-print(euclid_poly(7, [1, 1, 1], [2, -2]))
-print(euclid_poly(7, [1, 0, 1], [1, 0, 0, 1]))
-print(euclid_poly(2, [1, 0, 1], [1, 0, 0, 1]))
-print(euclid_poly(7, [1, 1, 1], [0]))
-print(euclid_poly(7, [2, 2, 2], [0]))
+#print(euclid_poly(7, [1, 1, 1], [2, -2]))
+#print(euclid_poly(7, [1, 0, 1], [1, 0, 0, 1]))
+#print(euclid_poly(2, [1, 0, 1], [1, 0, 0, 1]))
+#print(euclid_poly(7, [1, 1, 1], [0]))
+#print(euclid_poly(7, [2, 2, 2], [0]))
 
 # print(equals_poly_mod(7, [1, 1, 1], [10], [1, -1]))
 # print(equals_poly_mod(5, [1, 1, 1], [10], [1, -1]))

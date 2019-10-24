@@ -62,23 +62,22 @@ def mult_table(mod, mod_poly):
         for p in table[0]:
             table[i].append(multiply_poly(mod, table[0][i], p))
 
+    table[0] = [[0] for _ in table[0]]
+
     table = [[display_field(mod, mod_poly, p) for p in row] for row in table]
     rows  = [', '.join(row) for row in table]
     return '{' + '; '.join(rows) + '}'
 
 # Give a representative of the following field element of F in standard form
 def display_field(mod, mod_poly, a):
-    deg_mod_poly = deg_poly(mod, mod_poly)
-    deg_a        = deg_poly(mod, a)
-
-    if deg_a < deg_mod_poly:
-        return display_poly(mod, a)
-    elif deg_a == deg_mod_poly:
-        residue = subtract_poly(mod, a, mod_poly)
-        residue = [x % mod for x in residue]
-        return display_poly(mod, residue)
-    else:
-        return "idk!"
+    while not deg_poly(mod, a) < deg_poly(mod, mod_poly):
+        while not a[0] % mod_poly[0] == 0:
+            a[0] += mod
+        sub = mod_poly + [0] * (deg_poly(mod, a) - deg_poly(mod, mod_poly))
+        sub = [x * a[0] // mod_poly[0] for x in sub]
+        a = subtract_poly(mod, a, sub)
+    a = [x % mod for x in a]
+    return display_poly(mod, a)
 
 # Apply addution to the following element in F
 def add_field(mod, mod_poly, a, b):

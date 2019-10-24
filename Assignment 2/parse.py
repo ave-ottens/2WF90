@@ -58,7 +58,7 @@ for line in input:
 
     # find the command name, and argument
     bracket  = stripped.find(']')
-    command  = stripped[1:bracket]     # line from '[' to ']'
+    command  = stripped[1:bracket]    # line from '[' to ']'
     argument = stripped[bracket + 1:] # line after ']'
 
     # no argument is given, so the command tells us what method to execute
@@ -105,6 +105,7 @@ for line in input:
         output.write(f'[answer]\t{answer}\n')
         mod = None
         f   = None
+        method = None
 
     elif method == 'add-poly' and mod and not f == None and not g == None:
         answer = poly.add_poly(mod, f, g)
@@ -113,6 +114,7 @@ for line in input:
         mod = None
         f   = None
         g   = None
+        method = None
 
     elif method == 'subtract-poly' and mod and not f == None and not g == None:
         answer = poly.subtract_poly(mod, f, g)
@@ -121,6 +123,7 @@ for line in input:
         mod = None
         f   = None
         g   = None
+        method = None
 
     elif method == 'multiply-poly' and mod and not f == None and not g == None:
         answer = poly.multiply_poly(mod, f, g)
@@ -129,6 +132,7 @@ for line in input:
         mod = None
         f   = None
         g   = None
+        method = None
 
     elif method == 'long-div-poly' and mod and not f == None and not g == None:
         #pdb.set_trace()
@@ -140,22 +144,24 @@ for line in input:
         mod = None
         f   = None
         g   = None
+        method = None
 
     elif method == 'euclid-poly' and mod and not f == None and not g == None:
         answer = poly.euclid_poly(mod, f, g)
         if answer == "ERROR":
             output.write('[answer]\tERROR\n')
         else:
-            a, b, d = answer
-            a = poly.display_poly(mod, a)
-            b = poly.display_poly(mod, b)
-            d = poly.display_poly(mod, d)
-            output.write(f'[answ-a]\t{a}\n')
-            output.write(f'[answ-b]\t{b}\n')
-            output.write(f'[answ-d]\t{d}\n')
+            answ_a, answ_b, answ_d = answer
+            answ_a = poly.display_poly(mod, answ_a)
+            answ_b = poly.display_poly(mod, answ_b)
+            answ_d = poly.display_poly(mod, answ_d)
+            output.write(f'[answ-a]\t{answ_a}\n')
+            output.write(f'[answ-b]\t{answ_b}\n')
+            output.write(f'[answ-d]\t{answ_d}\n')
         mod = None
         f   = None
         g   = None
+        method = None
 
     elif method == 'equals-poly-mod' and mod and not f == None and not g == None and not h == None:
         if poly.equals_poly_mod(mod, f, g, h):
@@ -166,6 +172,7 @@ for line in input:
         f   = None
         g   = None
         h   = None
+        method = None
 
     elif method == 'irreducible' and mod and not f == None:
         if poly.irreducible(mod, f):
@@ -174,6 +181,7 @@ for line in input:
             output.write(f'[answer]\tFALSE\n')
         mod = None
         f   = None
+        method = None
 
     elif method == 'find-irred' and mod and deg:
         answer = poly.find_irred(mod, deg)
@@ -181,18 +189,21 @@ for line in input:
         output.write(f'[answer]\t{answer}\n')
         mod = None
         deg = None
+        method = None
 
     elif method == 'add-table' and mod and not mod_poly == None:
         answer = field.add_table(mod, mod_poly)
         output.write(f'[answer]\t{answer}\n')
         mod = None
         mod_poly = None
+        method = None
 
     elif method == 'mult-table' and mod and not mod_poly == None:
         answer = field.mult_table(mod, mod_poly)
         output.write(f'[answer]\t{answer}\n')
         mod = None
         mod_poly = None
+        method = None
 
     elif method == 'display-field' and mod and not mod_poly == None and not a == None:
         answer = field.display_field(mod, mod_poly, a)
@@ -200,6 +211,7 @@ for line in input:
         mod = None
         mod_poly = None
         a = None
+        method = None
 
     elif method == 'add-field' and mod and not mod_poly == None and not a == None and not b == None:
         answer = field.add_field(mod, mod_poly, a, b)
@@ -209,6 +221,7 @@ for line in input:
         mod_poly = None
         a = None
         b = None
+        method = None
 
     elif method == 'subtract-field' and mod and not mod_poly == None and not a == None and not b == None:
         answer = field.subtract_field(mod, mod_poly, a, b)
@@ -218,6 +231,7 @@ for line in input:
         mod_poly = None
         a = None
         b = None
+        method = None
 
     elif method == 'multiply-field' and mod and not mod_poly == None and not a == None and not b == None:
         answer = field.multiply_field(mod, mod_poly, a, b)
@@ -227,6 +241,7 @@ for line in input:
         mod_poly = None
         a = None
         b = None
+        method = None
 
     elif method == 'inverse-field' and mod and not mod_poly == None and not a == None:
         answer = field.inverse_field(mod, mod_poly, a)
@@ -235,6 +250,7 @@ for line in input:
         mod = None
         mod_poly = None
         a = None
+        method = None
 
     elif method == 'division-field' and mod and not mod_poly == None and not a == None and not b == None:
         answer = field.division_field(mod, mod_poly, a, b)
@@ -244,6 +260,7 @@ for line in input:
         mod_poly = None
         a = None
         b = None
+        method = None
 
     elif method == 'equals-field' and mod and not mod_poly == None and not a == None and not b == None:
         if field.equals_field(mod, mod_poly, a, b):
@@ -254,6 +271,7 @@ for line in input:
         mod_poly = None
         a = None
         b = None
+        method = None
 
     elif method == 'primitive' and mod and not mod_poly == None and not a == None:
         if field.primitive(mod, mod_poly, a):
@@ -263,6 +281,7 @@ for line in input:
         mod = None
         mod_poly = None
         a = None
+        method = None
 
     elif method == 'find-prim' and mod and not mod_poly == None:
         answer = field.find_prim(mod, mod_poly)
@@ -270,6 +289,7 @@ for line in input:
         output.write(f'[answer]\t{answer}\n')
         mod = None
         mod_poly = None
+        method = None
 
     #print(f'LINE: {repr(line)}')
     #print(f'COMMAND: {repr(command)}')

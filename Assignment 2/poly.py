@@ -40,6 +40,9 @@ def display_poly(mod, f):
 def deg_poly(mod, f):
     """Return the degree of polynomial f. (See Section 2.2)"""
 
+    if f == 0:
+        return 0
+
     power = len(f) - 1
 
     # find the first non-zero coefficient (after taking the mod)

@@ -1,5 +1,11 @@
-[mod]		5
-[mod-poly]	{1,0,2}
+[mod]		7
+[mod-poly]	{2,-2}
 [display-field]
-[a]		{1,1}
-#[answer]	X+1
+[a]		{1,1,1}
+#[answer]	3
+
+[mod]		7
+[mod-poly]	{2,-2}
+[display-field]
+[a]		{-6,1,-6}
+#[answer]	3

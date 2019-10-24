@@ -10,7 +10,7 @@ def display_poly(mod, f):
         # coef is the coefficient
         # power is the power of X the coefficient relates to
 
-        # normalize coef such that 0 <= coef < mod
+        # normalize chew such that 0 <= coef < mod
         coef = coef % mod
 
         # case distinction: ignore coefficients that are zero
@@ -40,9 +40,6 @@ def display_poly(mod, f):
 def deg_poly(mod, f):
     """Return the degree of polynomial f. (See Section 2.2)"""
 
-    if f == 0:
-        return 0
-
     power = len(f) - 1
 
     # find the first non-zero coefficient (after taking the mod)
@@ -56,6 +53,7 @@ def deg_poly(mod, f):
 
     return -1 # non-zero coefficient could not be found
 
+# An irreducible polynomial
 def mod_poly(mod, f):
     for i in range(0, len(f)):
         f[i] = f[i] % mod
@@ -216,7 +214,7 @@ def euclid_poly(mod, f, g):
     x, u = [1], [0]
     y, v = [0], [1]
     a, b = f.copy(), g.copy()
-    eqZero = False
+    eqZero = b[0] == 0
 
     while not eqZero:
         [q, r] = long_div_poly(mod, a, b)
@@ -240,7 +238,7 @@ def euclid_poly(mod, f, g):
     d = a
     if a[0] != 1:
         invA = modular_inversion(mod, a[0])
-        d = [1]
+        d = multiply_poly(mod, d, [invA])
     else:
         invA = a[0]
 
@@ -337,11 +335,11 @@ def random_poly(mod, deg):
 # print(long_div_poly(7, [1, 1, 1], [2, -2]))
 # print(long_div_poly(7, [1, 1, 1], [0]))
 
-# print(euclid_poly(7, [1, 1, 1], [2, -2]))
-# print(euclid_poly(7, [1, 0, 1], [1, 0, 0, 1]))
-# print(euclid_poly(2, [1, 0, 1], [1, 0, 0, 1]))
-# print(euclid_poly(7, [1, 1, 1], [0]))
-# print(euclid_poly(7, [2, 2, 2], [0]))
+print(euclid_poly(7, [1, 1, 1], [2, -2]))
+print(euclid_poly(7, [1, 0, 1], [1, 0, 0, 1]))
+print(euclid_poly(2, [1, 0, 1], [1, 0, 0, 1]))
+print(euclid_poly(7, [1, 1, 1], [0]))
+print(euclid_poly(7, [2, 2, 2], [0]))
 
 # print(equals_poly_mod(7, [1, 1, 1], [10], [1, -1]))
 # print(equals_poly_mod(5, [1, 1, 1], [10], [1, -1]))

@@ -92,11 +92,11 @@ for line in input:
         output.write(line)
 
     elif command == 'a':
-        a = None # placeholder
+        a = string_to_poly(argument)
         output.write(line)
 
     elif command == 'b':
-        b = None # placeholder
+        b = string_to_poly(argument)
         output.write(line)
 
     # output commands like [answer] are automatically ignored
@@ -158,16 +158,20 @@ for line in input:
         g   = None
 
     elif method == 'equals-poly-mod' and mod and not f == None and not g == None and not h == None:
-        answer = poly.equals_poly_mod(mod, f, g, h)
-        output.write(f'[answer]\t{answer}\n')
+        if poly.equals_poly_mod(mod, f, g, h):
+            output.write(f'[answer]\tTRUE\n')
+        else:
+            output.write(f'[answer]\tFALSE\n')
         mod = None
         f   = None
         g   = None
         h   = None
 
     elif method == 'irreducible' and mod and not f == None:
-        answer = poly.irreducible(mod, f)
-        output.write(f'[answer]\t{answer}\n')
+        if poly.irreducible(mod, f):
+            output.write(f'[answer]\tTRUE\n')
+        else:
+            output.write(f'[answer]\tFALSE\n')
         mod = None
         f   = None
 
@@ -252,14 +256,13 @@ for line in input:
         b = None
 
     elif method == 'primitive' and mod and not mod_poly == None and not a == None:
-        if field.primitive(mod, mod_poly, a, b):
+        if field.primitive(mod, mod_poly, a):
             output.write('[answer]\tTRUE\n')
         else:
             output.write('[answer]\tFALSE\n')
         mod = None
         mod_poly = None
         a = None
-        b = None
 
     elif method == 'find-prim' and mod and not mod_poly == None:
         answer = field.find_prim(mod, mod_poly)
@@ -267,3 +270,12 @@ for line in input:
         output.write(f'[answer]\t{answer}\n')
         mod = None
         mod_poly = None
+
+    #print(f'LINE: {repr(line)}')
+    #print(f'COMMAND: {repr(command)}')
+    #print(f'ARGUMENT: {repr(argument)}')
+    #print(f'METHOD: {repr(method)}')
+    #print(f'MOD: {repr(mod)}')
+    #print(f'MOD_POLY: {repr(mod_poly)}')
+    #print(f'A: {repr(a)}')
+    #print('')

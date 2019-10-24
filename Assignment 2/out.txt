@@ -172,7 +172,7 @@
 [f]		{1,1,1}
 [g]		{10}
 [h]		{1,-1}
-[answer]	True
+[answer]	TRUE
 #[answer]  	TRUE
 
 [mod]		5
@@ -180,7 +180,7 @@
 [f]		{1,1,1}
 [g]		{10}
 [h]		{1,-1}
-[answer]	False
+[answer]	FALSE
 #[answer] 	FALSE
 
 [mod]		7
@@ -188,19 +188,19 @@
 [f]		{1,1,1}
 [g]		{3}
 [h]		{0}
-[answer]	False
+[answer]	FALSE
 #[answer] 	FALSE
 
 [mod]		2
 [irreducible]
 [f]		{1,1,1}
-[answer]	True
+[answer]	TRUE
 #[answer]	TRUE
 
 [mod]		3
 [irreducible]
 [f]		{1,1,1}
-[answer]	False
+[answer]	FALSE
 #[answer]	FALSE
 
 [mod]		2
@@ -256,18 +256,21 @@
 
 [mod]		5
 [mod-poly]	{1,0,2}
+[answer]	X+1
 [display-field]
 [a]		{1,0,0}
 #[answer]	3
 
 [mod]		7
 [mod-poly]	{2,-2}
+[answer]	idk!
 [display-field]
 [a]		{1,1,1}
 #[answer]	3
 
 [mod]		2
 [mod-poly]	{1,1,1}
+[answer]	0
 [add-field]
 [a]		{1,1}
 [b]		{1,0}
@@ -275,6 +278,7 @@
 
 [mod]		7
 [mod-poly]	{2,-2}
+[answer]	3
 [add-field]
 [a]		{1,1,1}
 [b]		{2}
@@ -282,6 +286,7 @@
 
 [mod]		3
 [mod-poly]	{1,0,2,1}
+[answer]	X^2+X
 [subtract-field]
 [a]		{1,1,2}
 [b]		{2,0,1}
@@ -289,6 +294,7 @@
 
 [mod]		3
 [mod-poly]	{1,0,2,1}
+[answer]	2X^2+X+1
 [multiply-field]
 [a]		{1,1}
 [b]		{1,2}
@@ -296,6 +302,7 @@
 
 [mod]		3
 [mod-poly]	{1,0,2,1}
+[answer]	X^2+2
 [multiply-field]
 [a]		{1,0,0}
 [b]		{1,0}
@@ -303,18 +310,21 @@
 
 [mod]		2
 [mod-poly]	{1,1,1}
+[answer]	1
 [inverse-field]
 [a]		{1,0}
 #[answer]	X+1
 
 [mod]		2
 [mod-poly]	{1,1,0}
+[answer]	ERROR
 [inverse-field]
 [a]		{1,0}
 #[answer]	ERROR
 
 [mod]		2
 [mod-poly]	{1,1,1}
+[answer]	X+1
 [division-field]
 [a]		{1,0}
 [b]		{1,0}
@@ -322,6 +332,7 @@
 
 [mod]		2
 [mod-poly]	{1,1,1}
+[answer]	1
 [division-field]
 [a]		{1}
 [b]		{1,0}
@@ -329,6 +340,7 @@
 
 [mod]		2
 [mod-poly]	{1,1,1}
+[answer]	X+1
 [division-field]
 [a]		{1}
 [b]		{0}
@@ -336,6 +348,7 @@
 
 [mod]		5
 [mod-poly]	{1,0,2}
+[answer]	ERROR
 [equals-field]
 [a]		{1,0,0}
 [b]		{3}
@@ -343,30 +356,32 @@
 
 [mod]		7
 [mod-poly]	{1,0,0,2}
+[answer]	TRUE
 [primitive]
 [a]		{1,0}
 #[answer] 	FALSE
 
 [mod]		7
 [mod-poly]	{1,0,0,2}
+[answer]	TRUE
 [primitive]
 [a]		{1,0,1}
 #[answer] 	TRUE
 
 [mod]		7
 [mod-poly]	{1,0,6}
+[answer]	FALSE
 [find-prim]
-[answer]	ERROR
 #[answer] 	ERROR
 
 [mod]		7
 [mod-poly]	{1,0,1}
-[answer]	6X+1
+[answer]	6X+2
 [find-prim]
 #[answer] 	2X+6
 
 [mod]		7
 [mod-poly]	{1,0,1}
-[answer]	6X+4
+[answer]	X+6
 [find-prim]
 #[answer] 	X+2

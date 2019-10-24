@@ -10,7 +10,7 @@ def display_poly(mod, f):
         # coef is the coefficient
         # power is the power of X the coefficient relates to
 
-        # normalize chew such that 0 <= coef < mod
+        # normalize coef such that 0 <= coef < mod
         coef = coef % mod
 
         # case distinction: ignore coefficients that are zero
